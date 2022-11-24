@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs";
-import jwtDecode from "jwt-decode";
 import {Router} from "@angular/router";
 
 export const customAxios = axios.create({
@@ -60,21 +59,30 @@ export class HttpService {
 
   async Login(dto: any) {
     customAxios.post<User>('login', dto).then(successResult => {
-      this.user.token = successResult.data.token;
-      this.user.name = successResult.data.name;
-      this.user.email = successResult.data.email;
-      this.user.hashId = successResult.data.hashId;
+      if (successResult.status >= 400 && successResult.status < 500 ){
+        console.log(successResult)
+        this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
+      } else if (successResult.status >= 200 && successResult.status < 400 ){{
+        this.user.token = successResult.data.token;
+        this.user.name = successResult.data.name;
+        this.user.email = successResult.data.email;
+        this.user.hashId = successResult.data.hashId;
 
-      localStorage.setItem('token', this.user.token);
-      this.router.navigate(['./home'])
-      this.matSnackbar.open("Welcome", undefined, {duration: 3000})
+        localStorage.setItem('token', this.user.token);
+        this.router.navigate(['./dashboard'])
+        this.matSnackbar.open("Welcome", undefined, {duration: 3000})
+      }}
     })
   }
 
   async Register(dto: { password: any; email: any; name: any }) {
     customAxios.post('/register', dto).then(successResult => {
-      this.router.navigate(['./Login'])
-      this.matSnackbar.open("You have been registered", undefined, {duration: 3000});
-    })
+      if (successResult.status >= 400 && successResult.status < 500 ){
+        this.matSnackbar.open(successResult.data.preview, undefined, {duration: 3000});
+      } else if (successResult.status >= 200 && successResult.status < 400 ){
+        this.router.navigate(['./Login'])
+        this.matSnackbar.open("You have been registered", undefined, {duration: 3000});
+      }
+    });
   }
 }

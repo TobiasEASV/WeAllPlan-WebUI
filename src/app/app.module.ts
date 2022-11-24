@@ -23,6 +23,7 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {RoutesModule} from "./routes/routes.module";
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {RoutesModule} from "./routes/routes.module";
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     RoutesModule,

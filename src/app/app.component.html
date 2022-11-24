@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span style="flex: 1 1 auto;">We All Plan </span>
+  <span style="flex: 1 1 auto; cursor: pointer" routerLink="/home">We All Plan </span>
 
   <button mat-raised-button class="Primary" routerLink="/Login" *ngIf="http.user.name==undefined || http.user.name==''">
     Log in

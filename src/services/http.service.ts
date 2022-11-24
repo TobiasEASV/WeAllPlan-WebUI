@@ -60,7 +60,6 @@ export class HttpService {
   async Login(dto: any) {
     customAxios.post<User>('login', dto).then(successResult => {
       if (successResult.status >= 400 && successResult.status < 500 ){
-        console.log(successResult)
         this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
       } else if (successResult.status >= 200 && successResult.status < 400 ){{
         this.user.token = successResult.data.token;
@@ -69,7 +68,7 @@ export class HttpService {
         this.user.hashId = successResult.data.hashId;
 
         localStorage.setItem('token', this.user.token);
-        this.router.navigate(['./dashboard'])
+        this.router.navigate(['./Dashboard'])
         this.matSnackbar.open("Welcome", undefined, {duration: 3000})
       }}
     })

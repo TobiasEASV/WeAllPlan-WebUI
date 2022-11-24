@@ -1,1 +1,13 @@
-Yo it works you guys :D
+<mat-toolbar>
+  <span style="flex: 1 1 auto; cursor: pointer" routerLink="/home">We All Plan </span>
+
+  <button mat-raised-button class="Primary" routerLink="/Login" *ngIf="http.user.name==undefined || http.user.name==''">
+    Log in
+  </button>
+
+
+  <button mat-raised-button class="Primary" (click)="logOut()" *ngIf="http.user.name!=undefined && http.user.name!=''">
+    Sign out
+  </button>
+</mat-toolbar>
+<router-outlet></router-outlet>

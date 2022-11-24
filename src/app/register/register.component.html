@@ -1,0 +1,21 @@
+<div class="parentDiv">
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input [(ngModel)]="Email" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input [(ngModel)]="Name" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input [(ngModel)]="Password" matInput [type]="'password'">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Repeat Password</mat-label>
+    <input [(ngModel)]="RepeatedPassword" matInput [type]="'password'">
+  </mat-form-field>
+
+  <button mat-raised-button (click)="Register()">Register</button>
+
+</div>

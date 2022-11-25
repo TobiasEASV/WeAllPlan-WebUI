@@ -27,6 +27,7 @@ export class HttpService {
     email : '',
     hashId : ''
   }
+  IsUser: boolean = false;
 
   constructor(private matSnackbar: MatSnackBar,
               private router: Router) {
@@ -66,6 +67,7 @@ export class HttpService {
         this.user.name = successResult.data.name;
         this.user.email = successResult.data.email;
         this.user.hashId = successResult.data.hashId;
+        this.IsUser = true;
 
         localStorage.setItem('token', this.user.token);
         this.router.navigate(['./Dashboard'])

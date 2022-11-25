@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {HttpService} from "../services/http.service";
 import {Router, Event, NavigationEnd} from '@angular/router';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import * as http from "http";
+import jwtDecode from "jwt-decode";
 
 
 @Component({
@@ -22,23 +24,30 @@ export class AppComponent {
         this.currentRoute = event.url;
       }
     });
+
+    let t = localStorage.getItem('token') as any;
+    if (t){
+      let decoded = jwtDecode(t) as any;
+      let currentDate = new Date();
+      if (decoded.exp){
+        let expiry =  new Date(decoded.exp*1000);
+
+        if (currentDate<expiry){
+          this.http.IsUser = true;
+        }
+      }
+    }
   }
 
-  route() {
-    this.router.navigate(['./Home'])
-  }
+
 
   logOut() {
     this.router.navigate(['Home']).then(() => {
       this.snackBar.open('You have now been logged out', undefined, {duration: 3000})
-      localStorage.clear();
     })
+    localStorage.clear();
+    this.http.IsUser = false;
     this.http.user.name = '';
     localStorage.clear();
   }
-
-  logIn() {
-    this.router.navigate(['Login']);
-  }
-
 }

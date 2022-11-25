@@ -1,4 +1,23 @@
 .Primary{
-  background: #4287f5;
   font-weight: bold;
+}
+
+.headerSpan{
+  flex: 1 1 auto;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.Header{
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+.HeaderMenuLoggedIn{
+  background-image: url("../../src/images/user.png");
+  background-size: 100%;
+}
+
+.HeaderMenuAnonymous {
+  background-image: url("../../src/images/dotdotdot.png");
+  background-size: 100%;
 }

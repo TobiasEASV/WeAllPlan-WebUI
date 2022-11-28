@@ -37,7 +37,7 @@ export class AppComponent {
           this.http.ReadUserFromStorage(token);
         } else {
           localStorage.clear();
-          alert("You have been logged, login to continue.")
+          alert("You have been logged out, login to continue.")
           //TODO
         }
       }

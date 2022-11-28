@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpService} from "../../services/http.service";
+import {Clipboard} from '@angular/cdk/clipboard';
+import * as http from "http";
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+const randomize  = require('randomatic');
 
 @Component({
   selector: 'app-register',
@@ -12,7 +17,12 @@ export class RegisterComponent implements OnInit {
   RepeatedPassword: any;
   Name: any;
 
-  constructor(public http: HttpService) { }
+  newGeneratePassword: string = "";
+  hiddenPasswordString: string = "";
+  hidePassword: boolean = false;
+
+
+  constructor(public http: HttpService, private clipboard: Clipboard, private matSnackbar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -21,5 +31,20 @@ export class RegisterComponent implements OnInit {
     if (this.Password == this.RepeatedPassword){
       this.http.Register({password: this.Password, email: this.Email, name: this.Name});
     }
+  }
+
+  GeneratePassword() {
+    this.newGeneratePassword = randomize('*', 20);
+    this.Password = this.newGeneratePassword
+    this.RepeatedPassword = this.newGeneratePassword
+  }
+
+  CopyToClipboard(){
+    this.clipboard.copy(this.newGeneratePassword)
+    this.matSnackbar.open("Copy to clipboard", 'close', {duration: 2000});
+  }
+
+  ShowPassword(){
+    this.hidePassword = !this.hidePassword;
   }
 }

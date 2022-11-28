@@ -25,6 +25,7 @@ import {RegisterComponent} from "./register/register.component";
 import {RoutesModule} from "./routes/routes.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatMenuModule} from "@angular/material/menu";
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 
 @NgModule({
@@ -35,28 +36,29 @@ import {MatMenuModule} from "@angular/material/menu";
     HomeComponent,
     DashboardComponent
   ],
-    imports: [
-        RoutesModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        FormsModule,
-        MatCardModule,
-        MatTreeModule,
-        MatExpansionModule,
-        MatTooltipModule,
-        MatDialogModule,
-        RouterOutlet,
-        MatIconModule,
-        ReactiveFormsModule,
-        RouterOutlet,
-        MatCheckboxModule,
-        MatToolbarModule,
-        RouterLink,
-        MatMenuModule
-    ],
+  imports: [
+    RoutesModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    MatCardModule,
+    MatTreeModule,
+    MatExpansionModule,
+    MatTooltipModule,
+    MatDialogModule,
+    RouterOutlet,
+    MatIconModule,
+    ReactiveFormsModule,
+    RouterOutlet,
+    MatCheckboxModule,
+    MatToolbarModule,
+    RouterLink,
+    MatMenuModule,
+    ClipboardModule
+  ],
   providers: [MatSnackBar, Overlay, MatDialog],
   bootstrap: [AppComponent]
 })

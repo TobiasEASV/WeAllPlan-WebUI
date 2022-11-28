@@ -16,6 +16,16 @@
     <input [(ngModel)]="RepeatedPassword" matInput [type]="'password'">
   </mat-form-field>
 
-  <button mat-raised-button (click)="Register()">Register</button>
+  <div class="registerInteractables">
+    <button mat-raised-button (click)="Register()">Register</button>
+    <button mat-raised-button (click)="GeneratePassword()"> Generate Password </button>
+    <mat-icon *ngIf="newGeneratePassword != '' " (click)= "CopyToClipboard()"> file_copy</mat-icon>
+    <mat-icon *ngIf="newGeneratePassword != '' " (click)= "ShowPassword()">lock</mat-icon>
+    <mat-card *ngIf="hidePassword">
+      <mat-card-content style="font-size: 17px"> {{newGeneratePassword}} </mat-card-content>
+    </mat-card>
+  </div>
 
 </div>
+
+

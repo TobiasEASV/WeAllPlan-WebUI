@@ -3,17 +3,13 @@ import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs";
 import {Router} from "@angular/router";
+import jwtDecode from "jwt-decode";
+import {User} from "../app/types/user";
 
 export const customAxios = axios.create({
   baseURL: 'https://localhost:7158/',
 })
 
-export interface User {
-  token: string
-  email: string
-  name: string
-  hashId: string
-}
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +18,9 @@ export interface User {
 export class HttpService {
 
   user: User= {
-    token : '',
-    name : '',
-    email : '',
-    hashId : ''
+    Email : '',
+    UserName : '',
+    Id : ''
   }
   IsUser: boolean = false;
 
@@ -59,19 +54,14 @@ export class HttpService {
   }
 
   async Login(dto: any) {
-    customAxios.post<User>('login', dto).then(successResult => {
+    customAxios.post<string>('login', dto).then(successResult => {
       if (successResult.status >= 400 && successResult.status < 500 ){
         this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
       } else if (successResult.status >= 200 && successResult.status < 400 ){{
-        this.user.token = successResult.data.token;
-        this.user.name = successResult.data.name;
-        this.user.email = successResult.data.email;
-        this.user.hashId = successResult.data.hashId;
-        this.IsUser = true;
-
-        localStorage.setItem('token', this.user.token);
-        this.router.navigate(['./Dashboard'])
-        this.matSnackbar.open("Welcome", undefined, {duration: 3000})
+          this.ReadUserFromStorage(successResult.data);
+          localStorage.setItem('token', successResult.data);
+          this.router.navigate(['./Dashboard'])
+          this.matSnackbar.open("Welcome", undefined, {duration: 3000})
       }}
     })
   }
@@ -85,5 +75,15 @@ export class HttpService {
         this.matSnackbar.open("You have been registered", undefined, {duration: 3000});
       }
     });
+  }
+
+  ReadUserFromStorage (StorageToken: string){
+    let Token = jwtDecode(StorageToken) as User;
+    console.log(Token);
+
+    this.user.Id = Token.Id;
+    this.user.UserName = Token.UserName;
+    this.user.Email = Token.Email;
+    this.IsUser = true;
   }
 }

@@ -9,3 +9,8 @@ div.parentDiv{
 .button{
   margin-right: 2%;
 }
+
+.registerInteractables > button{
+  margin: 10px;
+}
+

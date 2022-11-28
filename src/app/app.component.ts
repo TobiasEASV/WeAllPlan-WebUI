@@ -35,7 +35,7 @@ export class AppComponent {
 
         if (currentDate<expiry){
           this.http.ReadUserFromStorage(token);
-        } else {
+        } else if (currentDate>expiry){
           localStorage.clear();
           alert("You have been logged out, login to continue.")
           //TODO

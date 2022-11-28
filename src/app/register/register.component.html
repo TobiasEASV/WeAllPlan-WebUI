@@ -1,31 +1,38 @@
 <div class="parentDiv">
-  <mat-form-field appearance="fill">
-    <mat-label>Email</mat-label>
-    <input [(ngModel)]="Email" matInput>
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Name</mat-label>
-    <input [(ngModel)]="Name" matInput>
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
-    <input [(ngModel)]="Password" matInput [type]="'password'">
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Repeat Password</mat-label>
-    <input [(ngModel)]="RepeatedPassword" matInput [type]="'password'">
-  </mat-form-field>
+  <mat-card class="main-mat-card">
+    <mat-card-title>
+      Register
+    </mat-card-title>
+    <mat-form-field  appearance="fill">
+      <mat-label>Email</mat-label>
+      <input required [(ngModel)]="Email" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input required [(ngModel)]="Name" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input required [(ngModel)]="Password" matInput [type]="'password'">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Repeat Password</mat-label>
+      <input required [(ngModel)]="RepeatedPassword" matInput [type]="'password'">
+    </mat-form-field>
 
-  <div class="registerInteractables">
-    <button mat-raised-button (click)="Register()">Register</button>
-    <button mat-raised-button (click)="GeneratePassword()"> Generate Password </button>
-    <mat-icon *ngIf="newGeneratePassword != '' " (click)= "CopyToClipboard()"> file_copy</mat-icon>
-    <mat-icon *ngIf="newGeneratePassword != '' " (click)= "ShowPassword()">lock</mat-icon>
-    <mat-card *ngIf="hidePassword">
-      <mat-card-content style="font-size: 17px"> {{newGeneratePassword}} </mat-card-content>
-    </mat-card>
-  </div>
+    <div class="registerInteractables">
+      <button mat-raised-button (click)="Register()">Register</button>
+      <button mat-raised-button (click)="GeneratePassword()"> Generate Password </button>
+      <mat-icon *ngIf="newGeneratePassword != '' " (click)= "ShowPassword()">remove_red_eye</mat-icon>
+        <mat-card *ngIf="hidePassword" [style]="PasswordCopied ? 'background-color: rgba(64,255,0,0.15)' : 'background-color: transparent'" id="GeneratedPassword">
+          <mat-card-content style=" font-size: 1.5vw"> {{newGeneratePassword}}
+            <mat-icon *ngIf="newGeneratePassword != ''" (click)= "CopyToClipboard()" style="float: right">file_copy</mat-icon>
+          </mat-card-content>
+        </mat-card>
+    </div>
+  </mat-card>
 
 </div>
+
 
 

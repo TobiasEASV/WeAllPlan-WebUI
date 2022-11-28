@@ -3,6 +3,7 @@ import {HttpService} from "../../services/http.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import * as http from "http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 const randomize  = require('randomatic');
 
@@ -20,12 +21,11 @@ export class RegisterComponent implements OnInit {
   newGeneratePassword: string = "";
   hiddenPasswordString: string = "";
   hidePassword: boolean = false;
+  PasswordCopied: boolean = false;
 
+  constructor(public http: HttpService, private clipboard: Clipboard, private matSnackbar: MatSnackBar) {}
 
-  constructor(public http: HttpService, private clipboard: Clipboard, private matSnackbar: MatSnackBar) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   Register() {
     if (this.Password == this.RepeatedPassword){
@@ -37,11 +37,15 @@ export class RegisterComponent implements OnInit {
     this.newGeneratePassword = randomize('*', 20);
     this.Password = this.newGeneratePassword
     this.RepeatedPassword = this.newGeneratePassword
+    this.clipboard.copy('')
+    this.PasswordCopied = false;
   }
 
   CopyToClipboard(){
     this.clipboard.copy(this.newGeneratePassword)
     this.matSnackbar.open("Copy to clipboard", 'close', {duration: 2000});
+    this.PasswordCopied = true;
+
   }
 
   ShowPassword(){

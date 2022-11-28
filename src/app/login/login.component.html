@@ -1,16 +1,22 @@
 <div class="parentDiv">
-  <mat-form-field appearance="fill">
-    <mat-label>Email</mat-label>
-    <input [(ngModel)]="email" matInput>
-  </mat-form-field>
-  <br>
+  <mat-card>
+    <mat-card-title>
+      Log in
+    </mat-card-title>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
-    <input [(ngModel)]="password" matInput [type]="'password'">
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input [(ngModel)]="email" matInput>
+    </mat-form-field>
+    <br>
 
-  <button mat-raised-button (click)="http.Login({email: email, password: password})">Log in</button>
-  <button mat-raised-button style="margin-left: 15px" routerLink="/Register">Register</button>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input [(ngModel)]="password" matInput [type]="'password'">
+    </mat-form-field>
+
+    <button mat-raised-button (click)="http.Login({email: email, password: password})">Log in</button>
+    <button mat-raised-button style="margin-left: 15px" routerLink="/Register">Register</button>
+  </mat-card>
 
 </div>

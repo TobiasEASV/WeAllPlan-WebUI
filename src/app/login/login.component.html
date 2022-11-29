@@ -15,8 +15,9 @@
       <input [(ngModel)]="password" matInput [type]="'password'">
     </mat-form-field>
 
-    <button mat-raised-button (click)="http.Login({email: email, password: password})">Log in</button>
-    <button mat-raised-button style="margin-left: 15px" routerLink="/Register">Register</button>
+    <button mat-raised-button (click)="http.Login({email: email, password: password, KeepMeLoggedIn: http.KeepMeLoggedIn})">Log in</button>
+    <mat-checkbox class="example-margin" style="margin-left: 1vw" [ngModel]="http.KeepMeLoggedIn">Keep me logged in</mat-checkbox>
+    <button mat-raised-button style="margin-left: 15px; float: right" routerLink="/Register">Register</button>
   </mat-card>
 
 </div>

@@ -27,6 +27,7 @@ export class HttpService {
     Id : ''
   }
   IsUser: boolean = false;
+  KeepMeLoggedIn: boolean = false;
 
   constructor(private matSnackbar: MatSnackBar,
               private router: Router) {
@@ -63,6 +64,7 @@ export class HttpService {
         this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
       } else if (successResult.status >= 200 && successResult.status < 400 ){{
           this.ReadUserFromStorage(successResult.data);
+          console.log(successResult)
           localStorage.setItem('token', successResult.data);
           this.router.navigate(['./Dashboard'])
           this.matSnackbar.open("Welcome " + this.user.UserName, undefined, {duration: 3000})

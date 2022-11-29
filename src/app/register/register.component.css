@@ -1,16 +1,19 @@
-.mat-form-field{
+mat-form-field{
   width: 100%;
 }
 div.parentDiv{
   width: 40%;
   margin: 5% auto auto;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
-.button{
-  margin-right: 2%;
+.main-mat-card{
+  padding: 5%;
+  background-color: whitesmoke;
 }
 
 .registerInteractables > button{
-  margin: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 

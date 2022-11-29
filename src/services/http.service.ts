@@ -5,9 +5,13 @@ import {catchError} from "rxjs";
 import {Router} from "@angular/router";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
+import {environment} from "../environments/environment";
 
 export const customAxios = axios.create({
-  baseURL: 'https://localhost:7158/',
+  baseURL: environment.baseUrl,
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
 })
 
 
@@ -61,7 +65,7 @@ export class HttpService {
           this.ReadUserFromStorage(successResult.data);
           localStorage.setItem('token', successResult.data);
           this.router.navigate(['./Dashboard'])
-          this.matSnackbar.open("Welcome", undefined, {duration: 3000})
+          this.matSnackbar.open("Welcome " + this.user.UserName, undefined, {duration: 3000})
       }}
     })
   }
@@ -79,7 +83,6 @@ export class HttpService {
 
   ReadUserFromStorage (StorageToken: string){
     let Token = jwtDecode(StorageToken) as User;
-    console.log(Token);
 
     this.user.Id = Token.Id;
     this.user.UserName = Token.UserName;

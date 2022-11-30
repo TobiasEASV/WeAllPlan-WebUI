@@ -83,10 +83,9 @@ export class HttpService {
     });
   }
 
-  async GetEvent(EventId: string | null =''): Promise<Event> {
-   let successResult = await customAxios.get<Event>('/Event/TestGetEvent', { params: { EventId: EventId}})
-    return successResult.data;
-
+  async GetEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
+     let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
+      return successResult.data
   }
 
   ReadUserFromStorage (StorageToken: string){

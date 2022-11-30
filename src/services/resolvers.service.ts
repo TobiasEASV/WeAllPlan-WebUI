@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot, Routes} from "@angular/router";
 import {HttpService} from "./http.service";
 
 
@@ -19,7 +19,10 @@ export class AnswerResolver implements Resolve<Event> {
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
     this.EventId = route.paramMap.get('EventId')
-    let successResult =  await this.http.GetEvent(this.EventId);
+    let successResult =  await this.http.GetEventToAnswer(this.EventId);
+    if(successResult == undefined){
+      return false
+    }else
     return successResult;
   }
 }

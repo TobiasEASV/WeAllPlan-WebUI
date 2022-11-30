@@ -22,7 +22,10 @@ const routes: Routes = [
     path: 'Register', component: RegisterComponent, title: 'Register'
   },
   {
-    path: 'Answer/:EventId', component: AnswerComponent, title: 'Answer', resolve: {Event: AnswerResolver}
+    path: 'Answer/:EventId', component: AnswerComponent, title: 'Answer', canActivate:[AuthguardService]
+  },
+  {
+    path: 'Answer/Share/:EventId', component: AnswerComponent, title: 'Answer', resolve: {Event: AnswerResolver}
   },
   {
     path: 'Dashboard', component: DashboardComponent, canActivate:[AuthguardService], title: 'Dashboard'

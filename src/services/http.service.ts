@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from "@angular/router";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
+import {Event} from "../app/types/event";
 import {environment} from "../environments/environment";
 
 export const customAxios = axios.create({
@@ -13,6 +14,7 @@ export const customAxios = axios.create({
     Authorization: `Bearer ${localStorage.getItem('token')}`
   }
 })
+
 
 
 @Injectable({
@@ -81,6 +83,11 @@ export class HttpService {
     });
   }
 
+  async GetEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
+     let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
+      return successResult.data
+  }
+
   ReadUserFromStorage (StorageToken: string){
     let Token = jwtDecode(StorageToken) as User;
 
@@ -90,3 +97,6 @@ export class HttpService {
     this.IsUser = true;
   }
 }
+
+
+

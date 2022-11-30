@@ -26,6 +26,7 @@ import {RoutesModule} from "./routes/routes.module";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {ClipboardModule} from "@angular/cdk/clipboard";
+import { AnswerComponent } from './answer/answer.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
     LoginComponent,
     RegisterComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    AnswerComponent
   ],
   imports: [
     RoutesModule,

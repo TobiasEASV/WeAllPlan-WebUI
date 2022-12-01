@@ -1,0 +1,64 @@
+.EventView {
+  background-color: whitesmoke;
+  margin-left: 2%;
+  margin-right: 2%;
+  margin-top: 0.7%;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+}
+
+.CreateButton {
+  float: bottom;
+  margin-top: 1%;
+  margin-left: 70%;
+  border-radius: 50%;
+  font-size: 55px;
+  color: green;
+  background: rgba(0, 0, 0, 0);
+  border-color: rgb(255, 255, 255);
+  width: 70px;
+}
+
+.CreateButton:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  background-color: whitesmoke;
+  transform: scale(120%);
+}
+
+.InvisibleButtonBackground {
+  background: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0);
+  border-radius: 50%;
+
+}
+
+.InvisibleButtonBackground:hover {
+  transform: scale(120%);
+  cursor: pointer;
+}
+
+.HeaderCard {
+  background-color: whitesmoke;
+  margin-left: 5.5%;
+  margin-top: 10px;
+  margin-right: 32%;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* width */
+::-webkit-scrollbar {
+
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #949393;
+  border-radius: 10px;
+}

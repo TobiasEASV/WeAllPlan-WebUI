@@ -1,6 +1,35 @@
-<p *ngFor="let event of Events">Title : {{event.title}}</p>
-<br>
-<p>{{http.user.Id}}</p>
-<br>
-<p>{{http.user.Email}}</p>
-<br>
+<mat-card class="HeaderCard" >
+  <mat-card-title>
+    Your Events
+  </mat-card-title>
+</mat-card>
+
+<div style="height: 800px; overflow: hidden; overflow-y: scroll; margin-top: 5px;margin-left: 2%; margin-right: 1%; border-radius: 20px; width:70%;float: left">
+  <div style=" padding: 5px; padding-bottom: 10px; border-radius: 20px">
+    <mat-expansion-panel *ngFor="let event of Events" class="EventView">
+      <mat-expansion-panel-header style="font-size: 18px; font-weight: bolder; overflow-x: hidden">
+        <mat-panel-title>{{event.title}}</mat-panel-title>
+        <button type = "button" style="float: right; margin-right: 15px" class="InvisibleButtonBackground" > <mat-icon>delete</mat-icon></button>
+        <button type = "button" style="float: right; margin-right: 15px" class="InvisibleButtonBackground">
+          <span class="material-icons" style="color: rgb(84, 84, 84);">mode_edit</span> </button>
+      </mat-expansion-panel-header>
+      Location : {{event.location}}
+      <br> Description : {{event.description}}
+
+
+    </mat-expansion-panel>
+  </div>
+</div>
+
+  <mat-card style="background-color: whitesmoke; margin-right: 1%;box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);text-align: center; overflow-x: hidden;">
+    <mat-card-title>
+      {{User.UserName}}
+      <br>
+      {{User.Email}}
+    </mat-card-title>
+  </mat-card>
+
+
+
+<button class="CreateButton">+</button>
+

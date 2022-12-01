@@ -1,0 +1,73 @@
+body{
+  background-color: #344a5f;
+}
+
+h1{
+  font-size: 40px;
+  color: whitesmoke;
+}
+h3{
+  color: whitesmoke;
+  font-size: 18px;
+}
+.center{
+  text-align: center;
+  margin: auto;
+  width: 50%;
+}
+
+img{
+  width:300px;
+  height:500px;
+  display: block;
+  clear: both;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-areas:
+   'one'
+   'two'
+   'three';
+  padding-block: 2rem;
+}
+.testimonial:nth-child(1) {
+  grid-area: one;
+}
+.testimonial:nth-child(2) {
+  grid-area: two;
+}
+.testimonial:nth-child(3) {
+  grid-area: three;
+}
+
+
+@media screen and (min-width: 33em) {
+  .testimonial-grid {
+    grid-template-areas:
+      "one two"
+      "three three"
+  }
+}
+
+#Help-button{
+  margin-right: 25px;
+  border: 2px solid white;
+  width: 130px;
+  font-size: 17px;
+}
+
+#Home-button{
+  width: 130px;
+  border: 2px solid white;
+  background-color: transparent;
+  font-size: 17px;
+  color: white;
+}
+#Home-button:hover{
+  background-color: gray;
+}
+
+#Help-button:hover{
+  background-color: gray;
+}

@@ -27,6 +27,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { AnswerComponent } from './answer/answer.component';
+import { ErrorComponent } from './error/error/error.component';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 
 @NgModule({
@@ -36,31 +38,33 @@ import { AnswerComponent } from './answer/answer.component';
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    AnswerComponent
+    AnswerComponent,
+    ErrorComponent
   ],
-  imports: [
-    RoutesModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    MatCardModule,
-    MatTreeModule,
-    MatExpansionModule,
-    MatTooltipModule,
-    MatDialogModule,
-    RouterOutlet,
-    MatIconModule,
-    ReactiveFormsModule,
-    RouterOutlet,
-    MatCheckboxModule,
-    MatToolbarModule,
-    RouterLink,
-    MatMenuModule,
-    ClipboardModule
-  ],
+    imports: [
+        RoutesModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        MatCardModule,
+        MatTreeModule,
+        MatExpansionModule,
+        MatTooltipModule,
+        MatDialogModule,
+        RouterOutlet,
+        MatIconModule,
+        ReactiveFormsModule,
+        RouterOutlet,
+        MatCheckboxModule,
+        MatToolbarModule,
+        RouterLink,
+        MatMenuModule,
+        ClipboardModule,
+        MatButtonToggleModule
+    ],
   providers: [MatSnackBar, Overlay, MatDialog],
   bootstrap: [AppComponent]
 })

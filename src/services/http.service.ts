@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs";
-import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from "@angular/router";
+import {Router} from "@angular/router";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
 import {Event} from "../app/types/event";
@@ -85,18 +85,18 @@ export class HttpService {
   }
 
   async GetEncryptedEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
-     let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
+     let successResult = await customAxios.get<Event>('/Event/GetEventFromInviteLink', { params: { EncryptedEventId: EncryptedEventId}})
       return successResult.data
   }
 
-  async GetEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
-    let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
+  async GetEventToAnswer(EventId: string): Promise<Event>{
+    let successResult = await customAxios.get<Event>('/Event/GetEvent', { params: { EventId: '1'}}) // EventId
     return successResult.data
   }
 
   ReadUserFromStorage (StorageToken: string){
     let Token = jwtDecode(StorageToken) as User;
-    
+
     this.user.Id = Token.Id;
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;

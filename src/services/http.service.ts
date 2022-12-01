@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {catchError} from "rxjs";
+import {catchError, config} from "rxjs";
 import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from "@angular/router";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
@@ -88,6 +88,12 @@ export class HttpService {
       return successResult.data
   }
 
+  async GetEventsFromUserID(UserId: string): Promise<Event[]>
+  {
+    let successResult = await customAxios.get<Event[]>('/Event/GetEventsFromUser', {params:{userId: UserId}})
+    //console.log(successResult.data)
+    return successResult.data
+  }
   ReadUserFromStorage (StorageToken: string){
     let Token = jwtDecode(StorageToken) as User;
 

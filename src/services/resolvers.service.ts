@@ -26,3 +26,23 @@ export class AnswerResolver implements Resolve<Event> {
     return successResult;
   }
 }
+
+@Injectable({providedIn: 'root'})
+export class DashboardResolver implements Resolve<Event[]> {
+
+  UserId: string = "";
+
+  constructor(private http: HttpService) {
+
+  }
+
+  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
+    this.UserId = this.http.user.Id;
+    let successResult =  await this.http.GetEventsFromUserID(this.UserId);
+    console.log(successResult)
+    if(successResult == undefined){
+      return false
+    }else
+      return successResult;
+  }
+}

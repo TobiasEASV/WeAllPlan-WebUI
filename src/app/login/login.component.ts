@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
   email: any;
   password: any;
+  KeepMeLoggedIn: boolean = false;
 
   constructor(public http: HttpService, private router: Router) { }
 

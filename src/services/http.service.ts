@@ -29,6 +29,7 @@ export class HttpService {
     Id : ''
   }
   IsUser: boolean = false;
+  SelectedEvent: Event | any;
 
   constructor(private matSnackbar: MatSnackBar,
               private router: Router) {
@@ -83,19 +84,26 @@ export class HttpService {
     });
   }
 
-  async GetEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
+  async GetEncryptedEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
      let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
       return successResult.data
   }
 
+  async GetEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
+    let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
+    return successResult.data
+  }
+
   ReadUserFromStorage (StorageToken: string){
     let Token = jwtDecode(StorageToken) as User;
-
+    
     this.user.Id = Token.Id;
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;
     this.IsUser = true;
   }
+
+
 }
 
 

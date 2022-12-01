@@ -3,9 +3,33 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnap
 import {HttpService} from "./http.service";
 
 
+/**
+ * Resolver for getting an event based on an encrypted URL.
+ */
+@Injectable({providedIn: 'root'})
+export class EncryptedAnswerResolver implements Resolve<Event> {
 
 
+  Event: Event | undefined
+  EventId: string | null ='';
 
+  constructor(private http: HttpService,  private route: ActivatedRoute) {
+    this.EventId = this.route.snapshot.params['EventId'];
+  }
+
+  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
+    this.EventId = route.paramMap.get('EventId')
+    let successResult =  await this.http.GetEncryptedEventToAnswer(this.EventId);
+    if(successResult == undefined){
+      return false
+    }else
+    return successResult;
+  }
+}
+
+/**
+ * Resolver for getting an event based on an encrypted URL.
+ */
 @Injectable({providedIn: 'root'})
 export class AnswerResolver implements Resolve<Event> {
 
@@ -18,11 +42,10 @@ export class AnswerResolver implements Resolve<Event> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    this.EventId = route.paramMap.get('EventId')
-    let successResult =  await this.http.GetEventToAnswer(this.EventId);
+    let successResult =  await this.http.GetEventToAnswer(this.http.SelectedEvent.id);
     if(successResult == undefined){
       return false
     }else
-    return successResult;
+      return successResult;
   }
 }

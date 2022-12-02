@@ -3,12 +3,12 @@ body{
 }
 
 h1{
-  font-size: 40px;
+  font-size: 45px;
   color: whitesmoke;
 }
 h3{
   color: whitesmoke;
-  font-size: 18px;
+  font-size: 20px;
 }
 .center{
   text-align: center;
@@ -19,12 +19,12 @@ h3{
 img{
   width:300px;
   height:500px;
-  display: block;
   clear: both;
 }
 
 .testimonial-grid {
   display: grid;
+  align-content: center;
   grid-template-areas:
    'one'
    'two'
@@ -50,6 +50,11 @@ img{
   }
 }
 
+#error-code{
+  font-size: 120px;
+  color: whitesmoke;
+  text-align: center;
+}
 #Help-button{
   margin-right: 25px;
   border: 2px solid white;

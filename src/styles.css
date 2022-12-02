@@ -3,9 +3,6 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 
-@import "node_modules/angular-calendar";
-
-
 .body{
   margin: 0;
   height: 100%;

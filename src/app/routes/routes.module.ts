@@ -8,6 +8,7 @@ import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthguardService} from "../../services/authguard.service";
 import {AnswerResolver} from "../../services/resolvers.service";
 import {AnswerComponent} from "../answer/answer.component";
+import {CreateEventComponent} from "../create-event/create-event.component";
 
 
 
@@ -29,6 +30,9 @@ const routes: Routes = [
   },
   {
     path: 'Dashboard', component: DashboardComponent, canActivate:[AuthguardService], title: 'Dashboard'
+  },
+  {
+    path: 'CreateEvent', component: CreateEventComponent, canActivate:[AuthguardService], title: 'Create Event'
   },
   {
     path: '**', component: HomeComponent

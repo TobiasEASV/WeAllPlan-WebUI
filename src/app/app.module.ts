@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -27,6 +28,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { AnswerComponent } from './answer/answer.component';
+import { CreateEventComponent } from './create-event/create-event.component';
+
 
 
 @NgModule({
@@ -36,9 +39,11 @@ import { AnswerComponent } from './answer/answer.component';
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    AnswerComponent
+    AnswerComponent,
+    CreateEventComponent,
   ],
   imports: [
+    BrowserModule,
     RoutesModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -59,9 +64,15 @@ import { AnswerComponent } from './answer/answer.component';
     MatToolbarModule,
     RouterLink,
     MatMenuModule,
-    ClipboardModule
+    ClipboardModule,
+    CalendarModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
   ],
   providers: [MatSnackBar, Overlay, MatDialog],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
+

@@ -45,15 +45,15 @@ export class AppComponent {
   }
 
 
-
   logOut() {
-    this.router.navigate(['Home']).then(() => {
-      this.snackBar.open('You have now been logged out', undefined, {duration: 3000})
-    })
     localStorage.clear();
     this.http.IsUser = false;
     this.http.user.UserName  = '';
     this.http.user.Email = '';
     this.http.user.Id = '';
+
+    this.router.navigate(['/']).then(() => {
+      window.location.reload();
+    })
   }
 }

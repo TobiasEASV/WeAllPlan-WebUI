@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError} from "rxjs";
-import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from "@angular/router";
+import {Router} from "@angular/router";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
 import {Event} from "../app/types/event";
@@ -16,33 +16,31 @@ export const customAxios = axios.create({
 })
 
 
-
 @Injectable({
   providedIn: 'root'
 })
 
 export class HttpService {
 
-  user: User= {
-    Email : '',
-    UserName : '',
-    Id : ''
+  user: User = {
+    Email: '',
+    UserName: '',
+    Id: ''
   }
   IsUser: boolean = false;
 
-  constructor(private matSnackbar: MatSnackBar,
-              private router: Router) {
+  constructor(private matSnackbar: MatSnackBar) {
     customAxios.interceptors.response.use(
       response => {
-        if (response.status ==201){
+        if (response.status == 201) {
           this.matSnackbar.open("Event created.", 'close', {duration: 4000});
         }
         return response;
       }, rejected => {
-        if (rejected.response.status >= 400 && rejected.response.status < 500){
-          matSnackbar.open("Error: "+rejected.response.data,'close', {duration: 4000});
-        } else if (rejected.response.status>499){
-          this.matSnackbar.open("Something went wrong on our end.",'close', {duration: 4000});
+        if (rejected.response.status >= 400 && rejected.response.status < 500) {
+          matSnackbar.open("Error: " + rejected.response.data, 'close', {duration: 4000});
+        } else if (rejected.response.status > 499) {
+          this.matSnackbar.open("Something went wrong on our end.", 'close', {duration: 4000});
         }
         catchError(rejected);
       }
@@ -59,12 +57,12 @@ export class HttpService {
       });
   }
 
-  async GetEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
-     let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', { params: { EncryptedEventId: EncryptedEventId}})
-      return successResult.data
+  async GetEventToAnswer(EncryptedEventId: string | null = ''): Promise<Event> {
+    let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', {params: {EncryptedEventId: EncryptedEventId}})
+    return successResult.data
   }
 
-  ReadUserFromStorage (StorageToken: string){
+  ReadUserFromStorage(StorageToken: string) {
     let Token = jwtDecode(StorageToken) as User;
 
     this.user.Id = Token.Id;

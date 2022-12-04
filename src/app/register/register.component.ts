@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
 
   CopyToClipboard(){
     this.clipboard.copy(this.newGeneratePassword)
-    this.matSnackbar.open("Copy to clipboard", 'close', {duration: 2000});
+    this.matSnackbar.open("Copied to clipboard", 'close', {duration: 2000});
     this.PasswordCopied = true;
 
   }

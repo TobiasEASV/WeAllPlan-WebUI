@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import axios from "axios";
 import {environment} from "../environments/environment";
 import {HttpService} from "./http.service";
-import {catchError} from "rxjs";
+import {catchError, Observable} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 
@@ -68,5 +68,17 @@ export class LoginService {
   }
 
 
-
+  LoginWithGoogle(credential: string){
+    customAxios.post<string>('loginWithGoogle', credential).then(successResult => {
+      if (successResult.status >= 400 && successResult.status < 500 ){
+        this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
+      } else if (successResult.status >= 200 && successResult.status < 400 ){{
+        console.log(successResult.data) //TODO - delete log
+        this.http.ReadUserFromStorage(successResult.data);
+        localStorage.setItem('token', successResult.data);
+        this.router.navigate(['./Dashboard'])
+        this.matSnackbar.open("Welcome " + this.http.user.UserName, undefined, {duration: 3000})
+      }}
+    })
+  }
 }

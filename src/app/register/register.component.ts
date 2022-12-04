@@ -4,6 +4,7 @@ import {Clipboard} from '@angular/cdk/clipboard';
 import * as http from "http";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {LoginService} from "../../services/login.service";
 
 const randomize  = require('randomatic');
 
@@ -23,13 +24,15 @@ export class RegisterComponent implements OnInit {
   hidePassword: boolean = false;
   PasswordCopied: boolean = false;
 
-  constructor(public http: HttpService, private clipboard: Clipboard, private matSnackbar: MatSnackBar) {}
+  constructor(public loginService: LoginService, private clipboard: Clipboard, private matSnackbar: MatSnackBar) {}
 
   ngOnInit(): void {}
 
   Register() {
     if (this.Password == this.RepeatedPassword){
-      this.http.Register({password: this.Password, email: this.Email, name: this.Name});
+      this.loginService.Register({password: this.Password, email: this.Email, name: this.Name});
+    } else {
+      this.matSnackbar.open("Passwords must match", 'close', {duration: 3000});
     }
   }
 

@@ -15,7 +15,7 @@
       <input [(ngModel)]="password" matInput [type]="'password'">
     </mat-form-field>
 
-    <button mat-raised-button (click)="http.Login({email: email, password: password})">Log in</button>
+    <button mat-raised-button (click)="loginService.Login({email: email, password: password})">Log in</button>
     <button mat-raised-button style="margin-left: 15px" routerLink="/Register">Register</button>
   </mat-card>
 

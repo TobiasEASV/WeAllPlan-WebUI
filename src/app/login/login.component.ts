@@ -42,10 +42,17 @@ export class LoginComponent implements OnInit {
       google.accounts.id.prompt((notification: PromptMomentNotification) => {
       });
     };
+
+    if (!localStorage.getItem('HasReloaded')) {
+      localStorage.setItem('HasReloaded', 'no more reload')
+      location.reload()
+    } else {
+      localStorage.removeItem('HasReloaded')
+    }
   }
 
   async handleCredentialResponse(response: CredentialResponse) {
-    await this.loginService.LoginWithGoogle(response.credential);
+    await this.loginService.LogInWithGoogle(response.credential);
   }
 
   Register() {

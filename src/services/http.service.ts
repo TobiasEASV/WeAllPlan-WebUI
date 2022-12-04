@@ -64,7 +64,7 @@ export class HttpService {
 
   ReadUserFromStorage(StorageToken: string) {
     let Token = jwtDecode(StorageToken) as User;
-
+    console.log(Token)
     this.user.Id = Token.Id;
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;

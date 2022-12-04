@@ -12,12 +12,10 @@ import {CredentialResponse} from "google-one-tap";
 export class LoginComponent implements OnInit {
 
   private googleClientId = environment.googleClientId
-  @ViewChild('googleButton') googleButton: ElementRef = new ElementRef({});
   email: any;
   password: any;
 
-  constructor(public loginService: LoginService, private router: Router) {
-  }
+  constructor(public loginService: LoginService, private router: Router) {}
 
   ngOnInit(): void {
     // @ts-ignore
@@ -32,11 +30,8 @@ export class LoginComponent implements OnInit {
       // @ts-ignore
       google.accounts.id.renderButton(
         // @ts-ignore
-        this.googleButton.nativeElement,
-        {
-          type: "standard", theme: "outline",
-          size: "large"
-        }
+        document.getElementById("buttonSpan"),
+        { theme: "outline", size: "medium", width: "400"}
       );
       // @ts-ignore
       google.accounts.id.prompt((notification: PromptMomentNotification) => {

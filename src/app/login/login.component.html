@@ -1,6 +1,6 @@
 <div class="parentDiv">
   <mat-card>
-    <mat-card-title>
+    <mat-card-title style="text-align: center">
       Log in
     </mat-card-title>
 
@@ -18,14 +18,15 @@
     <button mat-raised-button (click)="loginService.Login({email: email, password: password})">Log in</button>
     <button mat-raised-button style="margin-left: 15px" routerLink="/Register">Register</button>
 
-    <br><br><br>
-    <br><br><br>
+  </mat-card>
+
+</div>
+<div class="parentDiv">
+  <mat-card>
     <mat-card-title>
       Log in with Google
     </mat-card-title>
 
-    <div #googleButton></div>
-
+    <span id="buttonSpan" style=""></span>
   </mat-card>
-
 </div>

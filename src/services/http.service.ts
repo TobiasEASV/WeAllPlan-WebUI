@@ -69,6 +69,8 @@ export class HttpService {
     return successResult.data
   }
 
+
+
   ReadUserFromStorage(StorageToken: string) {
     let Token = jwtDecode(StorageToken) as User;
     console.log(Token)
@@ -76,6 +78,10 @@ export class HttpService {
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;
     this.IsUser = true;
+  }
+  deleteEvent(EventId: string, UserId:string){
+    let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
+
   }
 }
 

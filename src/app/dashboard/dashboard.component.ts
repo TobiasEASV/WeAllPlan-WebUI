@@ -26,8 +26,12 @@ export class DashboardComponent implements OnInit {
   }
 
   DeleteEvent(event: Event) {
-    this.http.deleteEvent(event.id, this.http.user.Id);
-    this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
+    var result = confirm("Want to delete: " + event.title)
+    if (result)
+    {
+      this.http.deleteEvent(event.id, this.http.user.Id);
+      this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
+    }
 
   }
 

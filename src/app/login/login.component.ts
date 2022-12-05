@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   password: any;
   keepMeLoggedIn: boolean = false;
 
-  constructor(public loginService: LoginService, private router: Router) {}
+  constructor(public loginService: LoginService, private router: Router) {
+  }
 
   ngOnInit(): void {
     // @ts-ignore
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
       google.accounts.id.renderButton(
         // @ts-ignore
         document.getElementById("buttonSpan"),
-        { theme: "outline", size: "medium", width: "400"}
+        {theme: "outline", size: "medium", width: "400"}
       );
       // @ts-ignore
       google.accounts.id.prompt((notification: PromptMomentNotification) => {

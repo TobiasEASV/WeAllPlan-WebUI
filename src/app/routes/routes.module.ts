@@ -8,10 +8,14 @@ import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthguardService} from "../../services/authguard.service";
 import {AnswerResolver} from "../../services/resolvers.service";
 import {AnswerComponent} from "../answer/answer.component";
+import {ErrorPagesComponent} from "../erorr-pages/error-pages.component";
 
 
 
 const routes: Routes = [
+  {
+    path: '', component: HomeComponent,  title: 'Home'
+  },
   {
     path: 'Home', component: HomeComponent,  title: 'Home'
   },
@@ -31,7 +35,7 @@ const routes: Routes = [
     path: 'Dashboard', component: DashboardComponent, canActivate:[AuthguardService], title: 'Dashboard'
   },
   {
-    path: '**', component: HomeComponent
+    path: '**',  component: ErrorPagesComponent, title: 'Error'
   }
 ]
 

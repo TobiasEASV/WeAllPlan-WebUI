@@ -6,7 +6,7 @@ import {LoginComponent} from "../login/login.component";
 import {RegisterComponent} from "../register/register.component";
 import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthguardService} from "../../services/authguard.service";
-import {AnswerResolver} from "../../services/resolvers.service";
+import {AnswerResolver, EncryptedAnswerResolver} from "../../services/resolvers.service";
 import {AnswerComponent} from "../answer/answer.component";
 
 
@@ -22,10 +22,10 @@ const routes: Routes = [
     path: 'Register', component: RegisterComponent, title: 'Register'
   },
   {
-    path: 'Answer/:EventId', component: AnswerComponent, title: 'Answer', canActivate:[AuthguardService]
+    path: 'Answer', component: AnswerComponent, title: 'Answer', canActivate:[AuthguardService], resolve: {Event: AnswerResolver}
   },
   {
-    path: 'Answer/Share/:EventId', component: AnswerComponent, title: 'Answer', resolve: {Event: AnswerResolver}
+    path: 'Answer/Share/:EncryptedEventId', component: AnswerComponent, title: 'Answer', resolve: {Event: EncryptedAnswerResolver}
   },
   {
     path: 'Dashboard', component: DashboardComponent, canActivate:[AuthguardService], title: 'Dashboard'

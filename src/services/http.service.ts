@@ -57,8 +57,13 @@ export class HttpService {
       });
   }
 
-  async GetEventToAnswer(EncryptedEventId: string | null = ''): Promise<Event> {
-    let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', {params: {EncryptedEventId: EncryptedEventId}})
+  async GetEncryptedEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
+    let successResult = await customAxios.get<Event>('/Event/GetEventFromInviteLink', { params: { EncryptedEventId: EncryptedEventId}})
+    return successResult.data
+  }
+
+  async GetEventToAnswer(EventId: string | null = ''): Promise<Event> {
+    let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', {params: {EventId: EventId}})
     return successResult.data
   }
 

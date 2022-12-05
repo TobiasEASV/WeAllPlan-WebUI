@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   private googleClientId = environment.googleClientId
   email: any;
   password: any;
-  KeepMeLoggedIn: boolean = false;
+  keepMeLoggedIn: boolean = false;
 
   constructor(public loginService: LoginService, private router: Router) {}
 

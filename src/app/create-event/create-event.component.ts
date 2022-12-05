@@ -1,17 +1,52 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Inject,
+  Injectable,
   OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import {CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import {
+  CalendarEvent,
+  CalendarEventTimesChangedEvent,
+  CalendarEventTitleFormatter,
+  CalendarView
+} from 'angular-calendar';
+import { WeekViewHourSegment } from 'calendar-utils';
+import { fromEvent } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { addDays, addHours, addMinutes, endOfWeek } from 'date-fns';
 
 import {FormControl} from "@angular/forms";
 import {map, Observable, startWith, Subject} from "rxjs";
-import {addDays, addHours} from 'date-fns';
 
+function floorToNearest(amount: number, precision: number) {
+  return Math.floor(amount / precision) * precision;
+}
+
+function ceilToNearest(amount: number, precision: number) {
+  return Math.ceil(amount / precision) * precision;
+}
+
+@Injectable()
+export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
+
+  // @ts-ignore
+  override weekTooltip(event: CalendarEvent, title: string) {
+    if (!event.meta.tmpEvent) {
+      return super.weekTooltip(event, title);
+    }
+  }
+
+  // @ts-ignore
+  override dayTooltip(event: CalendarEvent, title: string) {
+    if (!event.meta.tmpEvent) {
+      return super.dayTooltip(event, title);
+    }
+  }
+}
 
 @Component({
   selector: 'app-create-event',
@@ -19,17 +54,33 @@ import {addDays, addHours} from 'date-fns';
   templateUrl: './create-event.component.html',
   styleUrls: ['./create-event.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    {
+      provide: CalendarEventTitleFormatter,
+      useClass: CustomEventTitleFormatter,
+    },
+  ],
+  styles: [
+    `
+      .disable-hover {
+        pointer-events: none;
+      }
+    `,
+  ]
 })
 
 export class CreateEventComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   CalendarView = CalendarView;
+  refresh = new Subject<void>();
   // autocomplete input for EventSlot
   myControlStartTime = new FormControl('');
   myControlEndTime = new FormControl('');
+  dragToCreateActive = false;
+  weekStartsOn: 0 = 0;
   filteredOptions: Observable<string[]> | any;
-  refresh = new Subject<void>();
+
   options: string[] = [
     '00.00', '00.15', '00.30', "00.45",
     '01.00', '01.15', '01.30', "01.45",
@@ -57,7 +108,7 @@ export class CreateEventComponent implements OnInit {
     '23.00', '23.15', '23.30', "23.45",
   ];
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
 
@@ -83,26 +134,75 @@ export class CreateEventComponent implements OnInit {
                     }: CalendarEventTimesChangedEvent): void {
     event.start = newStart;
     event.end = newEnd;
-    this.refresh.next();
+    this.refreshFunction();
   }
 
-  events: CalendarEvent[] = [
-    {
-      title: 'Resizable event',
-      start: new Date(),
-      end: addHours(new Date(),1 ), // an end date is always required for resizable events to work
-      resizable: {
-        beforeStart: true, // this allows you to configure the sides the event is resizable from
-        afterEnd: true,
-      }
-    }
-  ];
+  events: CalendarEvent[] = [];
 
   // filters time
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  startDragToCreate(
+    segment: WeekViewHourSegment,
+    mouseDownEvent: MouseEvent,
+    segmentElement: HTMLElement
+  ) {
+    const dragToSelectEvent: CalendarEvent = {
+      title: 'New event',
+      start: segment.date,
+      draggable: true,
+      resizable: {
+        beforeStart: true, // this allows you to configure the sides the event is resizable from
+        afterEnd: true,
+      },
+      meta: {
+        tmpEvent: true,
+      },
+    };
+    this.events = [...this.events, dragToSelectEvent];
+    const segmentPosition = segmentElement.getBoundingClientRect();
+    this.dragToCreateActive = true;
+    const endOfView = endOfWeek(this.viewDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+
+    fromEvent(document, 'mousemove')
+      .pipe(
+        finalize(() => {
+          delete dragToSelectEvent.meta.tmpEvent;
+          this.dragToCreateActive = false;
+          this.refreshFunction();
+        }),
+        takeUntil(fromEvent(document, 'mouseup'))
+      )
+      .subscribe((mouseMoveEvent: any) => {
+        const minutesDiff = ceilToNearest(
+          mouseMoveEvent.clientY - segmentPosition.top,
+          30
+        );
+
+        const daysDiff =
+          floorToNearest(
+            mouseMoveEvent.clientX - segmentPosition.left,
+            segmentPosition.width
+          ) / segmentPosition.width;
+
+        const newEnd = addDays(addMinutes(segment.date, minutesDiff), daysDiff);
+        if (newEnd > segment.date && newEnd < endOfView) {
+          dragToSelectEvent.end = newEnd;
+        }
+        this.refreshFunction();
+      });
+    console.log(this.events)
+  }
+
+  refreshFunction() {
+    this.events = [...this.events];
+    this.cdr.detectChanges();
   }
 
 

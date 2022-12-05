@@ -29,6 +29,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { AnswerComponent } from './answer/answer.component';
 import { CreateEventComponent } from './create-event/create-event.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 
@@ -69,7 +70,8 @@ import { CreateEventComponent } from './create-event/create-event.component';
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    })
+    }),
+    MatAutocompleteModule
   ],
   providers: [MatSnackBar, Overlay, MatDialog],
   bootstrap: [AppComponent],

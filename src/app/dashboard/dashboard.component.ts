@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpService} from "../../services/http.service";
 import {Event} from "../types/event";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../types/user";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
 
   Events : Event[] = Event;
   User: User = User;
-  constructor(public http: HttpService,private route: ActivatedRoute, private matSnackbar: MatSnackBar) { }
+  constructor(public http: HttpService,private route: ActivatedRoute, private matSnackbar: MatSnackBar, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
     this.Events = this.route.snapshot.data['Event'];
@@ -26,8 +26,13 @@ export class DashboardComponent implements OnInit {
   }
 
   DeleteEvent(event: Event) {
-    this.http.deleteEvent(event.id, this.http.user.Id);
-    this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
+    var result = confirm("Want to delete: " + event.title)
+    if (result)
+    {
+      this.http.deleteEvent(event.id, this.http.user.Id);
+      this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
+    }
+
 
   }
 
@@ -42,6 +47,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ViewEventAnswers(event: Event) {
-    this.matSnackbar.open("You've clicked me.", "close", {duration:2000})
+    this.http.SelectedEventId = event.id
+    this.router.navigate(['Answer'])
   }
 }

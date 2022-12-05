@@ -34,12 +34,14 @@ export class AnswerResolver implements Resolve<Event> {
 
 
   Event: Event | undefined
+  EventId: string ='';
 
   constructor(private http: HttpService) {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    let successResult =  await this.http.GetEventToAnswer('1'); //this.http.SelectedEvent.id
+    this.EventId= this.http.SelectedEventId;
+    let successResult =  await this.http.GetEventToAnswer(this.EventId);
     if(successResult == undefined){
       return false
     }else

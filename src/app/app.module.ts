@@ -27,6 +27,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatMenuModule} from "@angular/material/menu";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import { AnswerComponent } from './answer/answer.component';
+import { ErrorPagesComponent } from './erorr-pages/error-pages.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { AnswerComponent } from './answer/answer.component';
     RegisterComponent,
     HomeComponent,
     DashboardComponent,
-    AnswerComponent
+    AnswerComponent,
+    ErrorPagesComponent
   ],
   imports: [
     RoutesModule,

@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
       this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
     }
 
+
   }
 
   EditEvent(event: Event) {

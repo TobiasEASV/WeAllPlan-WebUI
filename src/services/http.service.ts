@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {catchError} from "rxjs";
-import {Router} from "@angular/router";
+import {catchError, config} from "rxjs";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
 import {Event} from "../app/types/event";
@@ -67,6 +66,16 @@ export class HttpService {
     return successResult.data
   }
 
+
+  async GetEventsFromUserID(UserId: string): Promise<Event[]>
+  {
+    let successResult = await customAxios.get<Event[]>('/Event/GetEventsFromUser', {params:{userId: UserId}})
+    //console.log(successResult.data)
+    return successResult.data
+  }
+
+
+
   ReadUserFromStorage(StorageToken: string) {
     let Token = jwtDecode(StorageToken) as User;
     console.log(Token)
@@ -74,6 +83,10 @@ export class HttpService {
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;
     this.IsUser = true;
+  }
+  deleteEvent(EventId: string, UserId:string){
+    let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
+
   }
 }
 

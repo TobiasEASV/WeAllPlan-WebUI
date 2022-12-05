@@ -6,6 +6,7 @@ import {LoginComponent} from "../login/login.component";
 import {RegisterComponent} from "../register/register.component";
 import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthguardService} from "../../services/authguard.service";
+import {AnswerResolver, DashboardResolver} from "../../services/resolvers.service";
 import {AnswerResolver, EncryptedAnswerResolver} from "../../services/resolvers.service";
 import {AnswerComponent} from "../answer/answer.component";
 
@@ -28,7 +29,7 @@ const routes: Routes = [
     path: 'Answer/Share/:EncryptedEventId', component: AnswerComponent, title: 'Answer', resolve: {Event: EncryptedAnswerResolver}
   },
   {
-    path: 'Dashboard', component: DashboardComponent, canActivate:[AuthguardService], title: 'Dashboard'
+    path: 'Dashboard', component: DashboardComponent, title: 'Dashboard', canActivate:[AuthguardService], resolve:{Event : DashboardResolver}
   },
   {
     path: '**', component: HomeComponent

@@ -7,20 +7,25 @@
   <div
     style="height: 38vw; overflow: hidden; overflow-y: scroll; margin-top: 5px;margin-left: 2%; margin-right: 1%; border-radius: 20px; width:70%;float: left">
     <div style=" padding: 5px; padding-bottom: 10px; border-radius: 20px">
-      <mat-expansion-panel *ngFor="let event of Events" class="EventView">
-        <mat-expansion-panel-header style="font-size: 18px; font-weight: bolder; overflow-x: hidden">
-          <mat-panel-title>{{event.title}}</mat-panel-title>
-          <button type="button" style="float: right; margin-right: 2px" class="InvisibleButtonBackground"
-                  (click)="DeleteEvent(event)">
-            <mat-icon style="color: rgb(84,84,84)">delete</mat-icon>
-          </button>
-          <button type="button" style="float: right; margin-right: 15px" class="InvisibleButtonBackground"
-                  (click)="EditEvent(event)">
-            <span class="material-icons" style="color: rgb(84, 84, 84);">mode_edit</span></button>
-        </mat-expansion-panel-header>
+      <mat-card *ngFor="let event of Events" class="EventView" (click)="ViewEventAnswers(event)">
+
+        <mat-panel-title style="font-weight: bold; font-size: 20px">{{event.title}}</mat-panel-title>
+        <button type="button" style="float: right; margin-right: 2px" class="InvisibleButtonBackground"
+                (click)="DeleteEvent(event)">
+          <mat-icon style="color: rgb(84,84,84)">delete</mat-icon>
+        </button>
+        <button type="button" style="float: right; margin-right: 15px" class="InvisibleButtonBackground"
+                (click)="EditEvent(event)">
+          <span class="material-icons" style="color: rgb(84, 84, 84);">mode_edit</span>
+        </button>
+        <br>
+        <hr/>
+
         Location : {{event.location}}
-        <br> Description : {{event.description}}
-      </mat-expansion-panel>
+        <br>
+        Description : {{event.description}}
+        <button style="float:right;border-radius: 0px;box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);" class="InvisibleButtonBackground" (click)="ViewEventAnswers(event)"> View Answers </button>
+      </mat-card>
     </div>
   </div>
   <div style="height: 38vw;">

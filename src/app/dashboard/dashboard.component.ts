@@ -3,6 +3,7 @@ import {HttpService} from "../../services/http.service";
 import {Event} from "../types/event";
 import {ActivatedRoute} from "@angular/router";
 import {User} from "../types/user";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 let Event: Event[];
@@ -17,7 +18,7 @@ export class DashboardComponent implements OnInit {
 
   Events : Event[] = Event;
   User: User = User;
-  constructor(public http: HttpService,private route: ActivatedRoute) { }
+  constructor(public http: HttpService,private route: ActivatedRoute, private matSnackbar: MatSnackBar) { }
 
   async ngOnInit(): Promise<void> {
     this.Events = this.route.snapshot.data['Event'];
@@ -31,10 +32,16 @@ export class DashboardComponent implements OnInit {
   }
 
   EditEvent(event: Event) {
+    this.matSnackbar.open("You want to edit an event.", "close", {duration:2000})
 
   }
 
   CreateEvent() {
+    this.matSnackbar.open("You want to create an event.", "close", {duration:2000})
 
+  }
+
+  ViewEventAnswers(event: Event) {
+    this.matSnackbar.open("You've clicked me.", "close", {duration:2000})
   }
 }

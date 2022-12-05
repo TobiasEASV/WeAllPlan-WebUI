@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {environment} from "../../environments/environment";
@@ -9,7 +9,7 @@ import {CredentialResponse} from "google-one-tap";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements AfterContentInit {
 
   private googleClientId = environment.googleClientId
   email: any;
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(public loginService: LoginService, private router: Router) {
   }
 
-  ngOnInit(): void {
+  ngAfterContentInit(): void {
     // @ts-ignore
     window.onGoogleLibraryLoad = () => {
       // @ts-ignore
@@ -39,13 +39,6 @@ export class LoginComponent implements OnInit {
       google.accounts.id.prompt((notification: PromptMomentNotification) => {
       });
     };
-
-    if (!localStorage.getItem('HasReloaded')) {
-      localStorage.setItem('HasReloaded', 'no more reload')
-      location.reload()
-    } else {
-      localStorage.removeItem('HasReloaded')
-    }
   }
 
   async handleCredentialResponse(response: CredentialResponse) {
@@ -55,4 +48,6 @@ export class LoginComponent implements OnInit {
   Register() {
     this.router.navigate(['Register']);
   }
+
+
 }

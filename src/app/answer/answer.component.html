@@ -1,1 +1,14 @@
-<p>{{event.title}} ddddd</p>
+<div *ngFor="let evnetSlot of event.eventSlots">
+  {{evnetSlot.slotAnswers}} There has Answer
+  <h1>Welcome {{user}}</h1>
+</div>
+
+<div *ngIf="http.IsUser">
+  <h1>Welcome {{user}}</h1>
+  <button class="CreateButton" (click)="GenerateInviteLink()"> InviteLink </button>
+  <div *ngFor="let evnetSlot of event.eventSlots">
+    {{evnetSlot.slotAnswers}} has Answer
+  </div>
+  <h3>Dette er dit InviteLink: {{InviteLink}}</h3>
+</div>
+

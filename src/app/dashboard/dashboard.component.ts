@@ -24,4 +24,7 @@ export class DashboardComponent implements OnInit {
     this.User = this.http.user
   }
 
+  DeleteEvent(event: Event) {
+
+  }
 }

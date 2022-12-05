@@ -27,6 +27,7 @@ export class HttpService {
     Id: ''
   }
   IsUser: boolean = false;
+  SelectedEventId: string ='';
 
   constructor(private matSnackbar: MatSnackBar) {
     customAxios.interceptors.response.use(
@@ -62,6 +63,7 @@ export class HttpService {
   }
 
   async GetEventToAnswer(EventId: string | null = ''): Promise<Event> {
+    console.log(EventId)
     let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', {params: {EventId: EventId}})
     return successResult.data
   }
@@ -70,7 +72,7 @@ export class HttpService {
   async GetEventsFromUserID(UserId: string): Promise<Event[]>
   {
     let successResult = await customAxios.get<Event[]>('/Event/GetEventsFromUser', {params:{userId: UserId}})
-    //console.log(successResult.data)
+
     return successResult.data
   }
 

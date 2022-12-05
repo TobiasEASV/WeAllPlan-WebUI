@@ -9,7 +9,7 @@
     <div style=" padding: 5px; padding-bottom: 10px; border-radius: 20px">
       <mat-card *ngFor="let event of Events" class="EventView" (click)="ViewEventAnswers(event)">
 
-        <mat-panel-title style="font-weight: bold; font-size: 20px">{{event.title}}</mat-panel-title>
+        <mat-panel-title style="font-weight: bold; font-size: 20px">{{event.id}} {{event.title}}</mat-panel-title>
         <button type="button" style="float: right; margin-right: 2px" class="InvisibleButtonBackground"
                 (click)="DeleteEvent(event)">
           <mat-icon style="color: rgb(84,84,84)">delete</mat-icon>

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {environment} from "../../environments/environment";
@@ -46,6 +46,13 @@ export class LoginComponent implements OnInit {
     } else {
       localStorage.removeItem('HasReloaded')
     }
+
+    }
+
+
+
+  ngAfterContentInit(): void {
+
   }
 
   async handleCredentialResponse(response: CredentialResponse) {
@@ -55,4 +62,6 @@ export class LoginComponent implements OnInit {
   Register() {
     this.router.navigate(['Register']);
   }
+
+
 }

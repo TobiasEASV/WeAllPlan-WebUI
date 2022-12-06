@@ -12,7 +12,6 @@ export class AuthguardService implements CanActivate{
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let token = localStorage.getItem('token');
-    console.log(token)
     if (token) {
       let decodedToken = jwtDecode(token) as Token;
       let currentDate = new Date();

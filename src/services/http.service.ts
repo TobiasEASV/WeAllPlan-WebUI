@@ -71,7 +71,7 @@ export class HttpService {
 
   async GetEventToAnswer(EventId: string | null = ''): Promise<Event> {
     console.log(EventId)
-    let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', {params: {EventId: EventId}})
+    let successResult = await customAxios.get<Event>('/Event/GetEvent', {params: {eventId: EventId}})
     return successResult.data
   }
 
@@ -93,6 +93,11 @@ export class HttpService {
   deleteEvent(EventId: string, UserId:string){
     let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
 
+  }
+
+  async GetEventSlotsFromEvent(EventId: string) {
+    let successResult = await customAxios.get<Event>('/EventSlots/GetEventSlots', {params: {EventId: EventId}})
+    return successResult.data
   }
 }
 

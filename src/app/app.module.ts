@@ -31,6 +31,7 @@ import { AnswerComponent } from './answer/answer.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ErrorPagesComponent } from './erorr-pages/error-pages.component';
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({
@@ -44,36 +45,37 @@ import { ErrorPagesComponent } from './erorr-pages/error-pages.component';
     CreateEventComponent,
     ErrorPagesComponent
   ],
-  imports: [
-    BrowserModule,
-    RoutesModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    MatCardModule,
-    MatTreeModule,
-    MatExpansionModule,
-    MatTooltipModule,
-    MatDialogModule,
-    RouterOutlet,
-    MatIconModule,
-    ReactiveFormsModule,
-    RouterOutlet,
-    MatCheckboxModule,
-    MatToolbarModule,
-    RouterLink,
-    MatMenuModule,
-    ClipboardModule,
-    CalendarModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
-    MatAutocompleteModule
-  ],
+    imports: [
+        BrowserModule,
+        RoutesModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule,
+        MatCardModule,
+        MatTreeModule,
+        MatExpansionModule,
+        MatTooltipModule,
+        MatDialogModule,
+        RouterOutlet,
+        MatIconModule,
+        ReactiveFormsModule,
+        RouterOutlet,
+        MatCheckboxModule,
+        MatToolbarModule,
+        RouterLink,
+        MatMenuModule,
+        ClipboardModule,
+        CalendarModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
+        MatAutocompleteModule,
+        MatTableModule
+    ],
   providers: [MatSnackBar, Overlay, MatDialog],
   bootstrap: [AppComponent],
 })

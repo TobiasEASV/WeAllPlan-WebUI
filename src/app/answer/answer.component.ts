@@ -40,8 +40,10 @@ export class AnswerComponent implements OnInit {
     this.event.eventSlots.forEach((eventSlot)=> {
       this.Dates.push(eventSlot.startTime + " - " + eventSlot.endTime)
     })
-    this.AnswerDictionary.set('Jan', [1,2,1,0,1,0,1,0,1,0,1,0,1])
-    this.AnswerDictionary.set('mikkel', [1,2,1,0,2,1,0,2,1,0,2,1,0])
+    this.AnswerDictionary.set('Jan', [1,2,1,0,1,0,1,0,2,0,1,0,1])
+    this.AnswerDictionary.set('mikkel', [2,1,1,0,1,1,0,2,1,0,2,1,0])
+    this.AnswerDictionary.set('Simon', [0,2,1,1,0,1,0,2,1,0,2,1,0])
+    this.AnswerDictionary.set('Tobias', [2,2,1,0,2,1,0,2,1,2,2,1,0])
     console.log(this.event)
     this.response = new Array(this.tempDates.length-1).fill(0)
     }

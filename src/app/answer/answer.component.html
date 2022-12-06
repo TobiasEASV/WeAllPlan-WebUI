@@ -14,7 +14,15 @@
 
         </td>
         <td *ngFor="let answer of AnswerDictionary.get(key)">
-          <mat-card> {{answer}}</mat-card>
+          <mat-card *ngIf="answer == 0" >
+            <mat-icon>clear</mat-icon>
+          </mat-card>
+          <mat-card *ngIf="answer == 1" >
+            <mat-icon><span>&#63;</span></mat-icon>
+          </mat-card>
+          <mat-card *ngIf="answer == 2" >
+            <mat-icon>done</mat-icon>
+          </mat-card>
         </td>
       </tr>
       <hr style="width: 80%!important;">
@@ -24,7 +32,16 @@
 
         </td>
         <td *ngFor="let a of response; let index = index">
-          <mat-card (click)="changeResponse(index)">{{response[index]}}</mat-card>
+          <mat-card *ngIf="response[index] == 0" (click)="changeResponse(index)">
+            <mat-icon>clear</mat-icon>
+          </mat-card>
+          <mat-card *ngIf="response[index] == 1" (click)="changeResponse(index)">
+            <mat-icon><span>&#63;</span></mat-icon>
+          </mat-card>
+          <mat-card *ngIf="response[index] == 2" (click)="changeResponse(index)">
+            <mat-icon>done</mat-icon>
+          </mat-card>
+
         </td>
       </tr>
     </table>

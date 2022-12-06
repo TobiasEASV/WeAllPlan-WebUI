@@ -7,21 +7,20 @@
 }
 
 .CreateButton {
-
-
   border-radius: 50%;
   font-size: 55px;
-  color: green;
+  color: #32c200;
   background: rgba(0, 0, 0, 0);
-  border-color: rgb(255, 255, 255);
+  border: 1px rgb(255, 255, 255);
   width: 70px;
+  align-content: center;
 }
 
 .CreateButton:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
   background-color: whitesmoke;
   transform: scale(120%);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
 }
 
 .InvisibleButtonBackground {

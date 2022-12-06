@@ -41,6 +41,7 @@ export class AnswerResolver implements Resolve<Event> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
+
     this.EventId = this.http.SelectedEventId;
     let successResult =  await this.http.GetEventToAnswer(this.EventId);
     if(successResult == undefined){

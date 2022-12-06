@@ -70,6 +70,7 @@ export class HttpService {
   }
 
   async GetEventToAnswer(EventId: string | null = ''): Promise<Event> {
+    console.log(EventId)
     let successResult = await customAxios.get<Event>('/Event/GetEventToAnswer', {params: {EventId: EventId}})
     return successResult.data
   }

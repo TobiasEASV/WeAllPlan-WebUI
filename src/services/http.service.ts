@@ -57,6 +57,13 @@ export class HttpService {
       });
   }
 
+
+  async GenerateInviteLink(EventId: string): Promise<string>{
+    console.log("EventId in HttpService: " + EventId)
+    let successResult = await customAxios.get<string>('/Event/GenerateInviteLink', { params: { EventId: EventId}})
+    return successResult.data //Todo
+  }
+
   async GetEncryptedEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
     let successResult = await customAxios.get<Event>('/Event/GetEventFromInviteLink', { params: { EncryptedEventId: EncryptedEventId}})
     return successResult.data
@@ -76,11 +83,8 @@ export class HttpService {
     return successResult.data
   }
 
-
-
   ReadUserFromStorage(StorageToken: string) {
     let Token = jwtDecode(StorageToken) as User;
-    console.log(Token)
     this.user.Id = Token.Id;
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;

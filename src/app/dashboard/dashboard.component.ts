@@ -4,6 +4,7 @@ import {Event} from "../types/event";
 import {ActivatedRoute, Router} from "@angular/router";
 import {User} from "../types/user";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {environment} from "../../environments/environment";
 
 
 let Event: Event[];
@@ -32,7 +33,6 @@ export class DashboardComponent implements OnInit {
       this.http.deleteEvent(event.id, this.http.user.Id);
       this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
     }
-
 
   }
 

@@ -17,7 +17,8 @@ export class EncryptedAnswerResolver implements Resolve<Event> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    this.EventId = route.paramMap.get('EncryptedEventId')
+    this.EventId = route.paramMap.get('EncryptedEventId') + "=="
+
     let successResult =  await this.http.GetEncryptedEventToAnswer(this.EventId);
     if(successResult == undefined){
       return false
@@ -40,7 +41,8 @@ export class AnswerResolver implements Resolve<Event> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    this.EventId= this.http.SelectedEventId;
+
+    this.EventId = this.http.SelectedEventId;
     let successResult =  await this.http.GetEventToAnswer(this.EventId);
     if(successResult == undefined){
       return false
@@ -61,7 +63,6 @@ export class DashboardResolver implements Resolve<Event[]> {
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
     this.UserId = this.http.user.Id;
     let successResult =  await this.http.GetEventsFromUserID(this.UserId);
-    console.log(successResult)
     if(successResult == undefined){
       return false
     }else

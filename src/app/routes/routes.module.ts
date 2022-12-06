@@ -6,7 +6,11 @@ import {LoginComponent} from "../login/login.component";
 import {RegisterComponent} from "../register/register.component";
 import {DashboardComponent} from "../dashboard/dashboard.component";
 import {AuthguardService} from "../../services/authguard.service";
-import {AnswerResolver, EncryptedAnswerResolver,DashboardResolver} from "../../services/resolvers.service";
+import {
+  AnswerResolver,
+  EncryptedAnswerResolver,
+  DashboardResolver
+} from "../../services/resolvers.service";
 import {AnswerComponent} from "../answer/answer.component";
 import {CreateEventComponent} from "../create-event/create-event.component";
 import {ErrorPagesComponent} from "../erorr-pages/error-pages.component";

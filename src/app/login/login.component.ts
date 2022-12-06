@@ -51,9 +51,7 @@ export class LoginComponent implements OnInit {
 
 
 
-  ngAfterContentInit(): void {
 
-  }
 
   async handleCredentialResponse(response: CredentialResponse) {
     await this.loginService.LogInWithGoogle(response.credential);

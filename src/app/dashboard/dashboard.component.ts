@@ -19,7 +19,6 @@ export class DashboardComponent implements OnInit {
 
   Events : Event[] = Event;
   User: User = User;
-
   constructor(public http: HttpService,private route: ActivatedRoute, private matSnackbar: MatSnackBar, private router: Router) { }
 
   async ngOnInit(): Promise<void> {

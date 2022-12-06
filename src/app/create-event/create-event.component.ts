@@ -78,8 +78,12 @@ export class CreateEventComponent implements OnInit {
   myControlStartTime = new FormControl('');
   myControlEndTime = new FormControl('');
   dragToCreateActive = false;
-  weekStartsOn: 0 = 0;
+  weekStartsOn: 1=1; //This makes the calendar start on Mondays in week view
   filteredOptions: Observable<string[]> | any;
+  EventTitle: any;
+  EventLocation: any;
+  EventDescription: any;
+  events: Array<CalendarEvent> = [];
 
   options: string[] = [
     '00.00', '00.15', '00.30', "00.45",
@@ -136,8 +140,6 @@ export class CreateEventComponent implements OnInit {
     event.end = newEnd;
     this.refreshFunction();
   }
-
-  events: CalendarEvent[] = [];
 
   // filters time
   private _filter(value: string): string[] {
@@ -206,4 +208,36 @@ export class CreateEventComponent implements OnInit {
   }
 
 
+  formatDates(calendarEvent: CalendarEvent<any>) {
+
+    let startDate = (''+calendarEvent.start).slice(0, 15);
+    let endDate = (''+calendarEvent.start).slice(0, 15);
+
+    return startDate + ' to '+ endDate + '.';
+
+  }
+
+  formatTimes(calendarEvent: CalendarEvent<any>) {
+
+    let startHour = '' + calendarEvent.start.getHours();
+    startHour = ('0' + startHour).slice(-2);
+
+    let startMinute = '' + calendarEvent.start.getMinutes();
+    startMinute = ('0' + startMinute).slice(-2);
+
+
+      let endHour = '' + calendarEvent?.end?.getHours();
+      endHour = ('0' + endHour);
+
+      let endMinute = '' + calendarEvent?.end?.getMinutes();
+      endMinute = ('0' + endMinute).slice(-2);
+
+      if (calendarEvent.end == undefined){
+        endHour = startHour;
+        endMinute = startMinute;
+      }
+
+      return startHour + '.' + startMinute + ' to ' + endHour + '.' + endMinute;
+
+  }
 }

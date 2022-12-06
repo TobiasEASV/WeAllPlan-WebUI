@@ -1,19 +1,82 @@
+@import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../../../node_modules/angular-calendar/css/angular-calendar.css";
+
 .parentDiv {
-  margin: 1vw;
+  margin: 2%;
 }
 
 .calenderDiv {
-  width: 70vw;
-  margin-top: 1vw;
   float: left;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 32vw;
+  width: 70%;
+}
+
+.calenderButtonDiv{
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  float: left;
+  width: 70%;
 }
 
 .eventSlotsDiv {
-  width: 27vw;
+  margin-left: 2%;
+  margin-top: 1vw;
+  float: right;
+  width: 28%;
+}
+
+.eventSlotMatCard{
+  margin-bottom: 1vw;
+  height: 150px;
+}
+
+.eventListDiv{
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 22.5vw;
+}
+
+.matCardList{
+  margin-bottom: 5px;
+}
+
+.InputFieldsLeft{
+  width: 50%;
+  float: left;
+}
+
+.InputFieldsRight{
+  width: 50%;
   float: right;
 }
 
-.eventSlotMatCard {
-  margin-top: 5.3vw;
-  background-color: whitesmoke;
+.inputFieldsLeft{
+  width: 90%;
+}
+
+.inputFieldsRight{
+  width: 90%;
+  max-height: 150px;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #949393;
+  border-radius: 10px;
 }

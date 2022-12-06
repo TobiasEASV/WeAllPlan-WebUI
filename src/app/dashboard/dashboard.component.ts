@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
   }
 
   CreateEvent() {
-    this.matSnackbar.open("You want to create an event.", "close", {duration:2000})
+    this.router.navigate(['CreateEvent']);
 
   }
 

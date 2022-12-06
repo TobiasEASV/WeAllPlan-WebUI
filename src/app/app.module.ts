@@ -30,7 +30,7 @@ import {ClipboardModule} from "@angular/cdk/clipboard";
 import { AnswerComponent } from './answer/answer.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-
+import { ErrorPagesComponent } from './erorr-pages/error-pages.component';
 
 
 @NgModule({
@@ -42,6 +42,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     DashboardComponent,
     AnswerComponent,
     CreateEventComponent,
+    ErrorPagesComponent
   ],
   imports: [
     BrowserModule,

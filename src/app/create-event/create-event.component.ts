@@ -11,8 +11,8 @@ import {
 import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
-  CalendarEventTitleFormatter,
-  CalendarView
+  CalendarEventTitleFormatter, CalendarNativeDateFormatter,
+  CalendarView, CalendarModule, DateFormatterParams
 } from 'angular-calendar';
 import { WeekViewHourSegment } from 'calendar-utils';
 import { fromEvent } from 'rxjs';
@@ -21,6 +21,7 @@ import { addDays, addHours, addMinutes, endOfWeek } from 'date-fns';
 
 import {FormControl} from "@angular/forms";
 import {map, Observable, startWith, Subject} from "rxjs";
+import {DateAdapter} from "angular-calendar/date-adapters/date-adapter";
 
 function floorToNearest(amount: number, precision: number) {
   return Math.floor(amount / precision) * precision;
@@ -69,14 +70,17 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   ]
 })
 
-export class CreateEventComponent implements OnInit {
+@Injectable({
+  providedIn: 'root'
+})
+export class CreateEventComponent extends CalendarNativeDateFormatter implements OnInit {
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   CalendarView = CalendarView;
   refresh = new Subject<void>();
   // autocomplete input for EventSlot
-  myControlStartTime = new FormControl('');
-  myControlEndTime = new FormControl('');
+  myControlStartTime = new FormControl('00:00');
+  myControlEndTime = new FormControl('00:00');
   dragToCreateActive = false;
   weekStartsOn: 1=1; //This makes the calendar start on Mondays in week view
   filteredOptions: Observable<string[]> | any;
@@ -84,6 +88,13 @@ export class CreateEventComponent implements OnInit {
   EventLocation: any;
   EventDescription: any;
   events: Array<CalendarEvent> = [];
+
+  public override weekViewHour({date, locale}: DateFormatterParams): string {
+    return new Intl.DateTimeFormat('ca', {
+      hour: 'numeric',
+      minute: 'numeric'
+    }).format(date);
+  }
 
   options: string[] = [
     '00.00', '00.15', '00.30', "00.45",
@@ -113,8 +124,9 @@ export class CreateEventComponent implements OnInit {
   ];
 
   constructor(private cdr: ChangeDetectorRef) {
+    // @ts-ignore
+    super();
   }
-
 
   ngOnInit() {
     this.filteredOptions = this.myControlStartTime.valueChanges.pipe(
@@ -208,16 +220,8 @@ export class CreateEventComponent implements OnInit {
   }
 
 
-  formatDates(calendarEvent: CalendarEvent<any>) {
-
+  formatStartDate(calendarEvent: CalendarEvent<any>) {
     let startDate = (''+calendarEvent.start).slice(0, 15);
-    let endDate = (''+calendarEvent.start).slice(0, 15);
-
-    return startDate + ' to '+ endDate + '.';
-
-  }
-
-  formatTimes(calendarEvent: CalendarEvent<any>) {
 
     let startHour = '' + calendarEvent.start.getHours();
     startHour = ('0' + startHour).slice(-2);
@@ -225,19 +229,56 @@ export class CreateEventComponent implements OnInit {
     let startMinute = '' + calendarEvent.start.getMinutes();
     startMinute = ('0' + startMinute).slice(-2);
 
+    return 'Start: ' + startDate + ' - ' + startHour + '.' + startMinute;
+  }
 
-      let endHour = '' + calendarEvent?.end?.getHours();
-      endHour = ('0' + endHour);
+  formatEndDate(calendarEvent: CalendarEvent<any>) {
 
-      let endMinute = '' + calendarEvent?.end?.getMinutes();
+    let endDate;
+    let endHour;
+    let endMinute;
+
+    if (calendarEvent.end == undefined){
+      endDate =  (''+calendarEvent.start).slice(0, 15);
+      endHour =  ('0' + calendarEvent.start.getHours()).slice(-2);
+      endMinute = ('0' + calendarEvent.start.getMinutes()).slice(-2);
+    }
+    else {
+      endDate = (''+calendarEvent.end).slice(0, 15);
+
+      endHour = '' + calendarEvent?.end?.getHours();
+      endHour = ('0' + endHour).slice(-2);
+
+      endMinute = '' + calendarEvent?.end?.getMinutes();
       endMinute = ('0' + endMinute).slice(-2);
+    }
 
-      if (calendarEvent.end == undefined){
-        endHour = startHour;
-        endMinute = startMinute;
-      }
+    return 'End: ' + endDate + ' - ' + endHour + '.' + endMinute;
+  }
 
-      return startHour + '.' + startMinute + ' to ' + endHour + '.' + endMinute;
+  createEvent(date: Date) {
+    let startDate = new Date(date)
+    let endDate = new Date(date)
 
+    startDate.setHours(parseInt(this.myControlStartTime.value?.slice(0,2) || ''))
+    startDate.setMinutes(parseInt(this.myControlStartTime.value?.slice(3,5) || ''))
+
+    endDate.setHours(parseInt(this.myControlEndTime.value?.slice(0,2) || ''))
+    endDate.setMinutes(parseInt(this.myControlEndTime.value?.slice(3,5) || ''))
+
+    const clickToCreateEvent: CalendarEvent = {
+      title: 'New event',
+      start: startDate,
+      end: endDate,
+      draggable: true,
+      resizable: {
+        beforeStart: true, // this allows you to configure the sides the event is resizable from
+        afterEnd: true,
+      },
+      meta: {
+        tmpEvent: true,
+      },
+    };
+    this.events = [...this.events, clickToCreateEvent];
   }
 }

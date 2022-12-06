@@ -75,6 +75,7 @@
             [refresh]="refresh"
             [weekStartsOn]="weekStartsOn"
             (eventTimesChanged)="eventTimesChanged($event)"
+            (dayClicked)="createEvent($event.day.date)"
           >
           </mwl-calendar-month-view>
           <mwl-calendar-week-view
@@ -141,9 +142,9 @@
     <div class="eventListDiv">
       <mat-card *ngFor="let calendarEvent of events" class="matCardList">
         <mat-label style="font-weight: bold">
-          {{this.formatDates(calendarEvent)}}
+          {{this.formatStartDate(calendarEvent)}}
           <br>
-          {{this.formatTimes(calendarEvent)}}
+          {{this.formatEndDate(calendarEvent)}}
         </mat-label>
       </mat-card>
     </div>

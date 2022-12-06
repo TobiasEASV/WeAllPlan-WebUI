@@ -9,7 +9,7 @@ import {CredentialResponse} from "google-one-tap";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements AfterContentInit {
+export class LoginComponent implements OnInit {
 
   private googleClientId = environment.googleClientId
   email: any;
@@ -19,7 +19,7 @@ export class LoginComponent implements AfterContentInit {
   constructor(public loginService: LoginService, private router: Router) {
   }
 
-  ngAfterContentInit(): void {
+  ngOnInit(): void {
     // @ts-ignore
     window.onGoogleLibraryLoad = () => {
       // @ts-ignore
@@ -39,6 +39,20 @@ export class LoginComponent implements AfterContentInit {
       google.accounts.id.prompt((notification: PromptMomentNotification) => {
       });
     };
+
+    if (!localStorage.getItem('HasReloaded')) {
+      localStorage.setItem('HasReloaded', 'no more reload')
+      location.reload()
+    } else {
+      localStorage.removeItem('HasReloaded')
+    }
+
+    }
+
+
+
+  ngAfterContentInit(): void {
+
   }
 
   async handleCredentialResponse(response: CredentialResponse) {

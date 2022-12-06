@@ -14,13 +14,14 @@
   border: 1px rgb(255, 255, 255);
   width: 70px;
   align-content: center;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+
 }
 
 .CreateButton:hover {
   cursor: pointer;
   background-color: whitesmoke;
   transform: scale(120%);
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
 }
 
 .InvisibleButtonBackground {

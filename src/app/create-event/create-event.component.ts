@@ -168,6 +168,7 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
     const dragToSelectEvent: CalendarEvent = {
       title: 'New event',
       start: segment.date,
+      end: segment.date,
       draggable: true,
       resizable: {
         beforeStart: true, // this allows you to configure the sides the event is resizable from
@@ -280,5 +281,10 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
       },
     };
     this.events = [...this.events, clickToCreateEvent];
+  }
+
+  DeleteEvent(calendarEvent: CalendarEvent<any>) {
+    this.events = this.events.filter( (event) =>
+      (event.start != calendarEvent.start && event.end != calendarEvent.end));
   }
 }

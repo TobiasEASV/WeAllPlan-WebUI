@@ -93,7 +93,7 @@
 
   <div class="eventSlotsDiv">
     <div>
-      <mat-card class="eventSlotMatCard">
+        <mat-card class="eventSlotMatCard">
         <div style="width: 50%; float: left">
           <mat-card-title>
             Start time
@@ -142,6 +142,7 @@
     <div class="eventListDiv">
       <mat-card *ngFor="let calendarEvent of events" class="matCardList">
         <mat-label style="font-weight: bold">
+          <button mat-raised-button (click)="DeleteEvent(calendarEvent)" style="float: right">Delete</button>
           {{this.formatStartDate(calendarEvent)}}
           <br>
           {{this.formatEndDate(calendarEvent)}}

@@ -2,26 +2,29 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   Injectable,
-  OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
-  CalendarEventTitleFormatter, CalendarNativeDateFormatter,
-  CalendarView, CalendarModule, DateFormatterParams
+  CalendarEventTitleFormatter,
+  CalendarNativeDateFormatter,
+  CalendarView,
+  DateFormatterParams
 } from 'angular-calendar';
-import { WeekViewHourSegment } from 'calendar-utils';
-import { fromEvent } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
-import { addDays, addHours, addMinutes, endOfWeek } from 'date-fns';
-
+import {WeekViewHourSegment} from 'calendar-utils';
+import {fromEvent, map, Observable, startWith, Subject} from 'rxjs';
+import {finalize, takeUntil} from 'rxjs/operators';
+import {addDays, addMinutes, endOfWeek} from 'date-fns';
 import {FormControl} from "@angular/forms";
-import {map, Observable, startWith, Subject} from "rxjs";
-import {DateAdapter} from "angular-calendar/date-adapters/date-adapter";
+import {HttpService} from "../../services/http.service";
+import {EventSlot} from "../types/eventSlot";
+import {EventDTO} from "../types/eventDTO";
+import {SlotAnswer} from "../types/slotAnswer";
+import {Event} from "../types/event";
+
 
 function floorToNearest(amount: number, precision: number) {
   return Math.floor(amount / precision) * precision;
@@ -49,6 +52,14 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   }
 }
 
+let eventDTO: EventDTO;
+
+let slotAnswer: SlotAnswer;
+
+
+let eventSlot: EventSlot;
+let eventSlotDTO: EventSlot[]
+
 @Component({
   selector: 'app-create-event',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -70,6 +81,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   ]
 })
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -82,12 +94,20 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
   myControlStartTime = new FormControl('00:00');
   myControlEndTime = new FormControl('00:00');
   dragToCreateActive = false;
-  weekStartsOn: 1=1; //This makes the calendar start on Mondays in week view
+  weekStartsOn: 1 = 1; //This makes the calendar start on Mondays in week view
   filteredOptions: Observable<string[]> | any;
-  EventTitle: any;
-  EventLocation: any;
-  EventDescription: any;
-  events: Array<CalendarEvent> = [];
+
+
+
+  //Event
+  EventTitle: string = '';
+  EventLocation: string = '';
+  EventDescription: string = '';
+  CalendarEvents: Array<CalendarEvent> = [];
+  EventSlotDTO: EventSlot[] | any = [];
+  eventDTO: EventDTO =  {
+  }
+
 
   public override weekViewHour({date, locale}: DateFormatterParams): string {
     return new Intl.DateTimeFormat('ca', {
@@ -123,7 +143,7 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
     '23.00', '23.15', '23.30', "23.45",
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private http: HttpService) {
     // @ts-ignore
     super();
   }
@@ -178,7 +198,7 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
         tmpEvent: true,
       },
     };
-    this.events = [...this.events, dragToSelectEvent];
+    this.CalendarEvents = [...this.CalendarEvents, dragToSelectEvent];
     const segmentPosition = segmentElement.getBoundingClientRect();
     this.dragToCreateActive = true;
     const endOfView = endOfWeek(this.viewDate, {
@@ -212,17 +232,17 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
         }
         this.refreshFunction();
       });
-    console.log(this.events)
+    console.log(this.CalendarEvents)
   }
 
   refreshFunction() {
-    this.events = [...this.events];
+    this.CalendarEvents = [...this.CalendarEvents];
     this.cdr.detectChanges();
   }
 
 
   formatStartDate(calendarEvent: CalendarEvent<any>) {
-    let startDate = (''+calendarEvent.start).slice(0, 15);
+    let startDate = ('' + calendarEvent.start).slice(0, 15);
 
     let startHour = '' + calendarEvent.start.getHours();
     startHour = ('0' + startHour).slice(-2);
@@ -239,13 +259,12 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
     let endHour;
     let endMinute;
 
-    if (calendarEvent.end == undefined){
-      endDate =  (''+calendarEvent.start).slice(0, 15);
-      endHour =  ('0' + calendarEvent.start.getHours()).slice(-2);
+    if (calendarEvent.end == undefined) {
+      endDate = ('' + calendarEvent.start).slice(0, 15);
+      endHour = ('0' + calendarEvent.start.getHours()).slice(-2);
       endMinute = ('0' + calendarEvent.start.getMinutes()).slice(-2);
-    }
-    else {
-      endDate = (''+calendarEvent.end).slice(0, 15);
+    } else {
+      endDate = ('' + calendarEvent.end).slice(0, 15);
 
       endHour = '' + calendarEvent?.end?.getHours();
       endHour = ('0' + endHour).slice(-2);
@@ -261,11 +280,11 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
     let startDate = new Date(date)
     let endDate = new Date(date)
 
-    startDate.setHours(parseInt(this.myControlStartTime.value?.slice(0,2) || ''))
-    startDate.setMinutes(parseInt(this.myControlStartTime.value?.slice(3,5) || ''))
+    startDate.setHours(parseInt(this.myControlStartTime.value?.slice(0, 2) || ''))
+    startDate.setMinutes(parseInt(this.myControlStartTime.value?.slice(3, 5) || ''))
 
-    endDate.setHours(parseInt(this.myControlEndTime.value?.slice(0,2) || ''))
-    endDate.setMinutes(parseInt(this.myControlEndTime.value?.slice(3,5) || ''))
+    endDate.setHours(parseInt(this.myControlEndTime.value?.slice(0, 2) || ''))
+    endDate.setMinutes(parseInt(this.myControlEndTime.value?.slice(3, 5) || ''))
 
     const clickToCreateEvent: CalendarEvent = {
       title: 'New event',
@@ -280,11 +299,51 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
         tmpEvent: true,
       },
     };
-    this.events = [...this.events, clickToCreateEvent];
+    this.CalendarEvents = [...this.CalendarEvents, clickToCreateEvent];
   }
 
   DeleteEvent(calendarEvent: CalendarEvent<any>) {
-    this.events = this.events.filter( (event) =>
+    this.CalendarEvents = this.CalendarEvents.filter((event) =>
       (event.start != calendarEvent.start && event.end != calendarEvent.end));
   }
+
+
+  saveEvent() {
+    this.eventDTO.title = this.EventTitle;
+    this.eventDTO.userId = this.http.user.Id
+    this.eventDTO.description = this.EventDescription;
+    this.eventDTO.location = this.EventLocation;
+
+    let slotAnswer = {
+      id: 0,
+      userName: '',
+      email:'',
+      eventSlot: 0,
+      answer: 0
+    }
+
+    this.CalendarEvents.forEach(value =>
+
+    this.EventSlotDTO.push(eventSlot = {
+      id: '',
+      event: this.eventDTO,
+      startTime: value.start,
+      endTime: value.end,
+      confirmed: false,
+      slotAnswers: [slotAnswer]
+    })
+      )
+
+
+    this.eventDTO.eventSlots = this.EventSlotDTO
+
+
+
+
+
+    this.http.saveEvent( this.eventDTO);
+  }
+
+
 }
+

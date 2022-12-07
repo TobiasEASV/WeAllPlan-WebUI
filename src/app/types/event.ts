@@ -1,21 +1,21 @@
 export interface Event {
-  id: string,
-  title: string,
-  user: {
-    id: number,
-    name: string,
-    email: string,
-    password: string,
-    salt: string
+  id?: string,
+  title?: string,
+  user?: {
+    id: string,
+    name?: string,
+    email?: string,
+    password?: string,
+    salt?: string
   },
-  description: string,
-  location: string,
-  eventSlots: [
+  description?: string,
+  location?: string,
+  eventSlots?: [
     {
       id: number,
       event: {
-        id: number,
-        title: string,
+        id?: number,
+        title?: string,
         user: {
           id: number,
           name: string,
@@ -25,9 +25,7 @@ export interface Event {
         },
         description: string,
         location: string,
-        eventSlots: [
-          string
-        ]
+        eventSlots: []
       },
       startTime: Date,
       endTime: Date,

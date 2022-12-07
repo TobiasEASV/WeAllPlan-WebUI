@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
+import {ActivatedRoute, ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from "@angular/router";
 import {HttpService} from "./http.service";
+
 
 
 /**
@@ -37,10 +38,16 @@ export class AnswerResolver implements Resolve<Event> {
   Event: Event | undefined
   EventId: string ='';
 
-  constructor(private http: HttpService) {
+  constructor(private http: HttpService, private router: Router) {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
+
+    if(this.http.SelectedEventId == '')
+    {
+      this.router.navigate(['Dashboard'])
+      return false
+    }
     this.EventId = this.http.SelectedEventId;
     let successResult =  await this.http.GetEventToAnswer(this.EventId);
     if(successResult == undefined){
@@ -49,6 +56,8 @@ export class AnswerResolver implements Resolve<Event> {
       return successResult;
   }
 }
+
+
 
 @Injectable({providedIn: 'root'})
 export class DashboardResolver implements Resolve<Event[]> {

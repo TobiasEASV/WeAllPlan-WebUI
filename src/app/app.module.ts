@@ -31,6 +31,7 @@ import { AnswerComponent } from './answer/answer.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ErrorPagesComponent } from './erorr-pages/error-pages.component';
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({

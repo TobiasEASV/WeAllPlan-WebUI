@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
     }
 
 
-
   ngAfterContentInit(): void {
 
   }

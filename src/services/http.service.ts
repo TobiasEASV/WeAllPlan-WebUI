@@ -95,10 +95,6 @@ export class HttpService {
 
   }
 
-  async GetEventSlotsFromEvent(EventId: string) {
-    let successResult = await customAxios.get<Event>('/EventSlots/GetEventSlots', {params: {EventId: EventId}})
-    return successResult.data
-  }
 }
 
 

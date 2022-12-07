@@ -1,87 +1,99 @@
-<div style="overflow: auto; margin-top: 0.7vw;">
+<div style="overflow: hidden; margin-top: 1.4vw; height: 55vw">
   <div style="width: 22vw; float: left">
-  <mat-card class="boxShadowAnswerComp">
-    <mat-card-title>{{event.title}}</mat-card-title>
-    <hr>
-    <mat-card-content>Description: {{event.description}}
-      <br>
-      Location: {{event.location}}
-      <br>
-      Host: {{user}}
-    </mat-card-content>
-  </mat-card >
+    <mat-card class="boxShadowAnswerComp">
+      <mat-card-title>{{event.title}}</mat-card-title>
+      <hr>
+      <mat-card-content>Description: {{event.description}}
+        <br>
+        Location: {{event.location}}
+        <br>
+        Host: {{user}}
+      </mat-card-content>
+    </mat-card>
     <mat-card class="boxShadowAnswerComp">
       <mat-card-title>Answer options</mat-card-title>
       <mat-card class="boxShadowAnswerComp">
-        <mat-icon>clear</mat-icon> = Cannot attend
+        <mat-card-title>X = Cannot attend</mat-card-title>
       </mat-card>
       <mat-card class="boxShadowAnswerComp">
-        <mat-icon><span>&#63;</span></mat-icon> = Tentative
+        <mat-card-title>? = Tentative</mat-card-title>
       </mat-card>
       <mat-card class="boxShadowAnswerComp">
-        <mat-icon>done</mat-icon> = Available
+        <mat-card-title>✔ = Available</mat-card-title>
       </mat-card>
 
     </mat-card>
 
   </div>
-<div style="width: 70vw; margin-left: 2vw;" >
-  <mat-card style ="background: whitesmoke; overflow:auto;" class="boxShadowAnswerComp">
-    <table>
-      <tr>
-        <td *ngFor="let dates of tempDates">
-          <mat-card class="boxShadowAnswerComp">
-            {{dates}}
-          </mat-card>
-        </td>
-      </tr>
-      <tr *ngFor="let key of AnswerDictionary.keys()">
-        <td>
-          <mat-card class="boxShadowAnswerComp">{{key}}</mat-card>
+  <div style=" margin: 0 0.8vw;padding:0.6vw; background: whitesmoke;float: left;width: fit-content; max-width: 55vw;  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);">
+    <div
+      style="overflow: auto;  max-height: 75vh;">
+      <table>
+        <tr style="background: whitesmoke;z-index: 5;top: 0; position: sticky;">
+          <th *ngFor="let dates of Dates">
+            <mat-card class="boxShadowAnswerComp,centerAllignText">
+              <mat-card-title style="width: 4vw; height: 15vh; font-size: 16px">{{dates}}</mat-card-title>
+            </mat-card>
+          </th>
+        </tr>
+        <tr>
+          <td style="left: 0; position: sticky;z-index: 4;">
+            <mat-card class="answerMatCards,centerAllignText">
+              <mat-card-title class="matTitleCardAnswer">YOU</mat-card-title>
+            </mat-card>
+          </td>
+          <td *ngFor="let a of response; let index = index">
+            <mat-card style="background: rgba(255,46,46,0.6);" *ngIf="response[index] == 0"
+                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="changeResponse(index)">
+              <mat-card-title class="matTitleCardAnswer"> X</mat-card-title>
+            </mat-card>
+            <mat-card style="background: rgba(255,203,70,0.6);" *ngIf="response[index] == 1"
+                      class="myAnswerMatCards , answerMatCards ,centerAllignText" (click)="changeResponse(index)">
+              <mat-card-title class="matTitleCardAnswer"> ?</mat-card-title>
+            </mat-card>
+            <mat-card style="background: rgba(84,255,46,0.6);" *ngIf="response[index] == 2"
+                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="changeResponse(index)">
+              <mat-card-title class="matTitleCardAnswer">✔</mat-card-title>
+            </mat-card>
 
-        </td>
-        <td *ngFor="let answer of AnswerDictionary.get(key)">
-          <mat-card *ngIf="answer == 0" class="answerMatCards" >
-            <mat-icon>clear</mat-icon>
-          </mat-card>
-          <mat-card *ngIf="answer == 1" class="answerMatCards" >
-            <mat-icon><span>&#63;</span></mat-icon>
-          </mat-card>
-          <mat-card *ngIf="answer == 2" class="answerMatCards" >
-            <mat-icon>done</mat-icon>
-          </mat-card>
-        </td>
-      </tr>
-      <hr style="width: 80%!important;">
-      <tr>
-        <td>
-          <mat-card class="boxShadowAnswerComp">YOU</mat-card>
+          </td>
+        </tr>
+        <br>
+        <tr *ngFor="let key of AnswerDictionary.keys()">
+          <td style="left: 0; position: sticky; z-index: 4;">
+            <mat-card class="boxShadowAnswerComp,centerAllignText">
+              <mat-card-title class="matTitleCardAnswer">{{key}}</mat-card-title>
+            </mat-card>
+          </td>
 
-        </td>
-        <td *ngFor="let a of response; let index = index">
-          <mat-card *ngIf="response[index] == 0" class="myAnswerMatCards" (click)="changeResponse(index)">
-            <mat-icon>clear</mat-icon>
-          </mat-card>
-          <mat-card *ngIf="response[index] == 1" class="myAnswerMatCards"  (click)="changeResponse(index)">
-            <mat-icon><span>&#63;</span></mat-icon>
-          </mat-card>
-          <mat-card *ngIf="response[index] == 2" class="myAnswerMatCards"  (click)="changeResponse(index)">
-            <mat-icon>done</mat-icon>
-          </mat-card>
 
-        </td>
-      </tr>
-    </table>
-  </mat-card>
+          <td *ngFor="let answer of AnswerDictionary.get(key)">
+            <mat-card *ngIf="answer == 0" class="answerMatCards,centerAllignText"
+                      style="background: rgba(255,46,46,0.6);">
+              <mat-card-title class="matTitleCardAnswer"> X</mat-card-title>
+            </mat-card>
+            <mat-card *ngIf="answer == 1" class="answerMatCards,centerAllignText"
+                      style="background: rgba(255,203,70,0.6);">
+              <mat-card-title class="matTitleCardAnswer"> ?</mat-card-title>
+            </mat-card>
+            <mat-card *ngIf="answer == 2" class="answerMatCards,centerAllignText"
+                      style="background: rgba(84,255,46,0.6);">
+              <mat-card-title class="matTitleCardAnswer">✔</mat-card-title>
+            </mat-card>
+          </td>
+        </tr>
+        <br>
 
-</div>
-</div>
-<div *ngIf="http.IsUser">
-  <h1>Welcome {{user}}</h1>
-  <button class="CreateButton" (click)="GenerateInviteLink()"> InviteLink</button>
-  <div *ngFor="let evnetSlot of event.eventSlots">
-    {{evnetSlot.slotAnswers}} has Answer
+      </table>
+    </div>
   </div>
-  <h3>Dette er dit InviteLink: {{InviteLink}}</h3>
+  <div *ngIf="http.IsUser" style="float: left;">
+    <h1>Welcome {{user}}</h1>
+    <button class="CreateButton" (click)="GenerateInviteLink()"> InviteLink</button>
+    <div *ngFor="let evnetSlot of event.eventSlots">
+      {{evnetSlot.slotAnswers}} has Answer
+    </div>
+    <h3>Dette er dit InviteLink: {{InviteLink}}</h3>
+  </div>
 </div>
 

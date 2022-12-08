@@ -18,7 +18,7 @@ export class EncryptedAnswerResolver implements Resolve<Event> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    this.EventId = route.paramMap.get('EncryptedEventId') + "=="
+    this.EventId = route.paramMap.get('EncryptedEventId')
 
     let successResult =  await this.http.GetEncryptedEventToAnswer(this.EventId);
     if(successResult == undefined){

@@ -63,9 +63,8 @@ export class HttpService {
 
 
   async GenerateInviteLink(EventId: string): Promise<string>{
-    console.log("EventId in HttpService: " + EventId)
     let successResult = await customAxios.get<string>('/Event/GenerateInviteLink', { params: { EventId: EventId}})
-    return successResult.data //Todo
+    return successResult.data
   }
 
   async GetEncryptedEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{

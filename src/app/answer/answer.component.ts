@@ -92,44 +92,79 @@ export class AnswerComponent implements OnInit {
     }
   }
 
-  async SaveSlotAnswers() {
-    let slotanswers: SlotAnswer[] = []
-    if (this.http.IsUser) {
+  async saveSlotAnswersFromUser(slotanswers: SlotAnswer[]){
+    if (this.event.eventSlots)
+      for (let i = 0; i < this.event.eventSlots.length; i++) {
+        let slotanswer: SlotAnswer = {
+          answer: this.response[i],
+          email: this.http.user.Email,
+          eventSlotId: this.event.eventSlots[i].id,
+          id: 0,
+          userName: this.http.user.UserName
+        }
+        slotanswers.push(slotanswer)
+      }
+    await this.http.saveSlotAnswer(slotanswers).then(() => {
+      this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
+        this.pushSlotAnswersToDOM(slotanswers);
+    })
+
+  }
+
+  async saveSlotAnswersFromGuest(slotanswers: SlotAnswer[])
+  {
+    let result = this.dialog.open(GuestCredentialDialogComponent);
+    result.afterClosed().subscribe(async result => {
       if (this.event.eventSlots)
         for (let i = 0; i < this.event.eventSlots.length; i++) {
           let slotanswer: SlotAnswer = {
             answer: this.response[i],
-            email: this.http.user.Email,
+            email: result[0],
             eventSlotId: this.event.eventSlots[i].id,
             id: 0,
-            userName: this.http.user.UserName
+            userName: result[1]
           }
           slotanswers.push(slotanswer)
+          await this.http.saveSlotAnswer(slotanswers).then(() => {
+              this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
+            this.pushSlotAnswersToDOM(slotanswers)
+            }
+          )
+
         }
-      await this.http.saveSlotAnswer(slotanswers).then(() => {
-        this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
-      })
+    })
+  }
+
+  async pushSlotAnswersToDOM(slotanswers: SlotAnswer[]){
+    slotanswers.forEach((slotanswer)=>{
+      if (this.AnswerDictionary.has(slotanswer.userName)) {
+        // @ts-ignore
+        this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
+      } else {
+        this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
+      }
+    })
+
+  }
+
+  async SaveSlotAnswers() {
+    let slotanswers: SlotAnswer[] = []
+    if (this.http.IsUser) {
+      await this.saveSlotAnswersFromUser(slotanswers);
 
     } else {
-      let result = this.dialog.open(GuestCredentialDialogComponent);
-      result.afterClosed().subscribe(async result => {
-        if (this.event.eventSlots)
-          for (let i = 0; i < this.event.eventSlots.length; i++) {
-            let slotanswer: SlotAnswer = {
-              answer: this.response[i],
-              email: result[0],
-              eventSlotId: this.event.eventSlots[i].id,
-              id: 0,
-              userName: result[1]
-            }
-            slotanswers.push(slotanswer)
-            await this.http.saveSlotAnswer(slotanswers).then(() => {
-                this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
-              }
-            )
+      await this.saveSlotAnswersFromGuest(slotanswers);
 
-          }
-      })
+    }
+    let table = document.getElementById("AnswerTable")
+    let answers = document.getElementById("Answers")
+    if (answers!=null && table != null) {
+      table.removeChild(answers)
+      let button = document.getElementById("saveButton")
+      if (button!=null)
+      {
+        button.setAttribute("disabled", "true")
+      }
     }
   }
 

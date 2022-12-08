@@ -23,7 +23,7 @@
     style=" margin: 0 0.8vw;padding:0.6vw; background: whitesmoke;float: left;width: fit-content; max-width: 70vw;  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);">
     <div
       style="overflow: auto;  max-height: 75vh;">
-      <table>
+      <table id="AnswerTable">
         <tr style="background: whitesmoke;z-index: 5;top: 0; position: sticky;">
           <th *ngFor="let dates of Dates">
             <mat-card class="centerAllignText" style=" background: whitesmoke; border-style: none; box-shadow:none">
@@ -31,7 +31,7 @@
             </mat-card>
           </th>
         </tr>
-        <tr>
+        <tr id="Answers">
           <td style="left: 0; position: sticky;z-index: 4;">
             <mat-card class="centerAllignText" style=" background: whitesmoke; border-style: none; box-shadow:none">
               <mat-card-title class="matTitleCardAnswer">YOU</mat-card-title>
@@ -80,9 +80,9 @@
         <br>
       </table>
     </div>
-    <button *ngIf="http.IsUser" class="SaveSlotAnswerButton" style="float:right; margin-right: 10px" (click)="SaveSlotAnswers()">Save Answers
+    <button id="saveButton" *ngIf="http.IsUser" class="SaveSlotAnswerButton" style="float:right; margin-right: 10px" (click)="SaveSlotAnswers()">Save Answers
     </button>
-    <button (click)="GenerateInviteLink()" class="SaveSlotAnswerButton" style="float:right"> Link Generator</button>
+    <button  (click)="GenerateInviteLink()" class="SaveSlotAnswerButton" style="float:right"> Link Generator</button>
   </div>
 </div>
 

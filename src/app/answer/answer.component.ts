@@ -1,76 +1,140 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {HttpService} from "../../services/http.service";
 import {Event} from "../types/event";
-
+import {Clipboard} from '@angular/cdk/clipboard';
 import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../environments/environment";
-
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {User} from "../types/user";
 
 
 let Event: Event
 
 
-
 @Component({
   selector: 'app-answer',
   templateUrl: './answer.component.html',
-  styleUrls: ['./answer.component.css']
+  styleUrls: ['./answer.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AnswerComponent implements OnInit {
 
-  Dates: string[] = ['user']
-  tempDates: string[] = ['user',' 28/1', '29/1', '2/2', '12/2', '12/2', '12/2', '12/2', '12/2', '12/2', '12/2', '12/2', '12/2', '12/2']
-  AnswerDictionary: Map<string, number[]> =new Map();
 
+  Dates: string[] = ['']
+  answers: Map<string,number>= new Map();
+  tempDates: string[] = ['user', ' 28/1 15:40' , '29/1 15:40', '2/2 15:40 - 16:00', '12/2 15:40', '13/2 15:40', '14/2 15:40', '15/2 15:40', '16/2 15:40', '17/2 15:40', '18/2 15:40', '19/2 15:40 - 16:00', '20/2 15:40', '21/2 15:40']
+  AnswerDictionary: Map<string, number[]> = new Map();
+  LoggedInUser: User ={
+    Email: '',
+    UserName: '',
+    Id: ''
+  };
   user = "";
   event: Event = Event
   InviteLink: string = "";
   response: number[] = [];
+  SlotAnswerName: string = "";
+  SlotAnswerEmail: string = "";
+  isEmail: boolean = this.SlotAnswerEmail.includes("@");
 
-  constructor(public http: HttpService, private route: ActivatedRoute) {
+  constructor(public http: HttpService, private route: ActivatedRoute, private clipboard: Clipboard, private matSnackbar: MatSnackBar) {
   }
 
   async ngOnInit(): Promise<void> {
-      if(!this.http.IsUser){
-        this.user = "John Do"
-      }
-        this.event = this.route.snapshot.data['Event'];
-        this.user = this.http.user.UserName
 
-    if(this.event.eventSlots) {
-      this.event.eventSlots.forEach((eventSlot)=> {
-        this.Dates.push(eventSlot.startTime + " - " + eventSlot.endTime)
+    if (!this.http.IsUser) {
+      this.user = "John Do"
+    }
+    else
+    {
+      this.LoggedInUser = this.http.user
+    }
+
+    this.event = this.route.snapshot.data['Event'];
+    this.user = this.http.user.UserName
+    if(this.event.eventSlots){
+    this.event.eventSlots.forEach((eventSlot) => {
+      this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime))+ "-" + this.formatEndDate(new Date(eventSlot.endTime)))
+      eventSlot.slotAnswers.forEach((slotanswer) => {
+        if (this.AnswerDictionary.has(slotanswer.userName))
+        {
+          // @ts-ignore
+          this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
+        }
+        else{
+          this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
+        }
+
       })
-    }
+    })}
 
-    this.AnswerDictionary.set('Jan', [1,2,1,0,1,0,1,0,2,0,1,0,1])
-    this.AnswerDictionary.set('mikkel', [2,1,1,0,1,1,0,2,1,0,2,1,0])
-    this.AnswerDictionary.set('Simon', [0,2,1,1,0,1,0,2,1,0,2,1,0])
-    this.AnswerDictionary.set('Tobias', [2,2,1,0,2,1,0,2,1,2,2,1,0])
-    console.log(this.event)
-    this.response = new Array(this.tempDates.length-1).fill(0)
-    }
-
-  GenerateInviteLink(){
-    this.http.GenerateInviteLink(this.http.SelectedEventId)
-      .then(EncryptedInviteLink => this.InviteLink = environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink )
+    this.response = new Array(this.Dates.length - 1).fill(0)
   }
 
-  changeResponse(response:number) {
+  GenerateInviteLink() {
+    this.http.GenerateInviteLink(this.http.SelectedEventId)
+      .then(EncryptedInviteLink => {
+        this.InviteLink = ( environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink)
+        this.clipboard.copy( this.InviteLink)
+        this.matSnackbar.open(this.InviteLink + " copied to clipboard.", 'close', {duration: 5000});
+      })
+
+  }
+  changeResponse(response: number) {
     console.log(response)
     console.log(this.response[response])
-    if (this.response[response] ==0)
-    {
-      this.response[response] =1;
-    }
-    else if (this.response[response] ==1)
-    {
-      this.response[response] =2;
-    }
-    else if (this.response[response] ==2)
-    {
-      this.response[response] =0;
+    if (this.response[response] == 0) {
+      this.response[response] = 1;
+    } else if (this.response[response] == 1) {
+      this.response[response] = 2;
+    } else if (this.response[response] == 2) {
+      this.response[response] = 0;
     }
   }
+
+  SaveSlotAnswers() {
+
+
+    if (this.event.eventSlots)
+    for(let i =0; i<this.event.eventSlots.length;i++)
+    {
+      console.log("eventslotID: " + this.event.eventSlots[i].id +"  ResponseId: " +this.response[i] + "  " + this.SlotAnswerName + "   " + this.SlotAnswerEmail);
+
+    }
+
+
+  }
+
+  formatStartDate(calendarEvent: Date) {
+    let startDate = (''+calendarEvent).slice(0, 15);
+
+    let startHour = '' + calendarEvent.getHours();
+    startHour = ('0' + startHour).slice(-2);
+
+    let startMinute = '' + calendarEvent.getMinutes();
+    startMinute = ('0' + startMinute).slice(-2);
+
+    return startDate + ' - ' + startHour + '.' + startMinute;
+  }
+
+  formatEndDate(calendarEvent: Date) {
+
+    let endDate;
+    let endHour;
+    let endMinute;
+
+      endDate = (''+calendarEvent).slice(0, 15);
+
+      endHour = '' + calendarEvent.getHours();
+      endHour = ('0' + endHour).slice(-2);
+
+      endMinute = '' + calendarEvent.getMinutes();
+      endMinute = ('0' + endMinute).slice(-2);
+
+
+    return endDate + ' - ' + endHour + '.' + endMinute;
+  }
+
+
 }
 

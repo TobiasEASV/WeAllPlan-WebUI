@@ -1,18 +1,50 @@
 .answerMatCards{
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
-  margin: 5px;
 }
 
 .myAnswerMatCards{
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
-  margin: 5px;
+
 }
 .myAnswerMatCards:hover{
-  transform: scale(120%);
+  cursor: pointer;
 }
 
 .boxShadowAnswerComp{
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
-  margin: 5px;
   background-color: whitesmoke;
+
+}
+
+.centerAllignText{
+  text-align: center;
+  overflow-y: clip;
+}
+
+.matTitleCardAnswer{
+  height: 4vh;
+  padding-top: 10px
+}
+
+.SaveSlotAnswerButton{
+  border-radius: 10px;
+  font-size: 20px;
+  color: #32c200;
+  background: rgba(0, 0, 0, 0);
+  border: 1px rgb(255, 255, 255);
+  width: 10vw;
+  align-content: center;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);
+}
+
+.mat-snack-bar-container{
+  scale: 1.25;
+}
+
+.SaveSlotAnswerButton:hover {
+  cursor: pointer;
+  background-color: whitesmoke;
+}
+
+.SaveSlotAnswerButton:disabled{
+  color:grey;
+  cursor: auto;
 }

@@ -109,6 +109,7 @@ export class HttpService {
     console.log(event)
     await customAxios.post("/Event/CreateEvent", event)
   }
+
 }
 
 

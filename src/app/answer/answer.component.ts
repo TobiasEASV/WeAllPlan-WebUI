@@ -37,7 +37,7 @@ export class AnswerComponent implements OnInit {
     this.user = this.http.user.UserName
 
     this.event.eventSlots.forEach((eventSlot) => {
-      this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime))+ "<br> - <br>" + this.formatEndDate(new Date(eventSlot.endTime)))
+      this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime))+ "-" + this.formatEndDate(new Date(eventSlot.endTime)))
       eventSlot.slotAnswers.forEach((slotanswer) => {
         if (this.AnswerDictionary.has(slotanswer.userName))
         {
@@ -69,6 +69,15 @@ export class AnswerComponent implements OnInit {
     }
   }
 
+  SaveSlotAnswers() {
+    let map = new Map<any,number>()
+    for(let i =0; i<this.event.eventSlots.length;i++)
+    {
+      map.set(this.event.eventSlots[i],this.response[i])
+    }
+    console.log(map)
+  }
+
   formatStartDate(calendarEvent: Date) {
     let startDate = (''+calendarEvent).slice(0, 15);
 
@@ -98,5 +107,7 @@ export class AnswerComponent implements OnInit {
 
     return endDate + ' - ' + endHour + '.' + endMinute;
   }
+
+
 }
 

@@ -31,14 +31,14 @@
       <table>
         <tr style="background: whitesmoke;z-index: 5;top: 0; position: sticky;">
           <th *ngFor="let dates of Dates">
-            <mat-card class="boxShadowAnswerComp,centerAllignText">
+            <mat-card class="centerAllignText">
               <mat-card-title style="width: 4vw; height: 15vh; font-size: 16px">{{dates}}</mat-card-title>
             </mat-card>
           </th>
         </tr>
         <tr>
           <td style="left: 0; position: sticky;z-index: 4;">
-            <mat-card class="answerMatCards,centerAllignText">
+            <mat-card class="centerAllignText">
               <mat-card-title class="matTitleCardAnswer">YOU</mat-card-title>
             </mat-card>
           </td>
@@ -48,7 +48,7 @@
               <mat-card-title class="matTitleCardAnswer"> X</mat-card-title>
             </mat-card>
             <mat-card style="background: rgba(255,203,70,0.6);" *ngIf="response[index] == 1"
-                      class="myAnswerMatCards , answerMatCards ,centerAllignText" (click)="changeResponse(index)">
+                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="changeResponse(index)">
               <mat-card-title class="matTitleCardAnswer"> ?</mat-card-title>
             </mat-card>
             <mat-card style="background: rgba(84,255,46,0.6);" *ngIf="response[index] == 2"
@@ -61,31 +61,31 @@
         <br>
         <tr *ngFor="let key of AnswerDictionary.keys()">
           <td style="left: 0; position: sticky; z-index: 4;">
-            <mat-card class="boxShadowAnswerComp,centerAllignText">
+            <mat-card class="centerAllignText">
               <mat-card-title class="matTitleCardAnswer">{{key}}</mat-card-title>
             </mat-card>
           </td>
 
 
           <td *ngFor="let answer of AnswerDictionary.get(key)">
-            <mat-card *ngIf="answer == 0" class="answerMatCards,centerAllignText"
+            <mat-card *ngIf="answer == 0" class="centerAllignText"
                       style="background: rgba(255,46,46,0.6);">
               <mat-card-title class="matTitleCardAnswer"> X</mat-card-title>
             </mat-card>
-            <mat-card *ngIf="answer == 1" class="answerMatCards,centerAllignText"
+            <mat-card *ngIf="answer == 1" class="centerAllignText"
                       style="background: rgba(255,203,70,0.6);">
               <mat-card-title class="matTitleCardAnswer"> ?</mat-card-title>
             </mat-card>
-            <mat-card *ngIf="answer == 2" class="answerMatCards,centerAllignText"
+            <mat-card *ngIf="answer == 2" class="centerAllignText"
                       style="background: rgba(84,255,46,0.6);">
               <mat-card-title class="matTitleCardAnswer">✔</mat-card-title>
             </mat-card>
           </td>
         </tr>
         <br>
-
       </table>
     </div>
+    <button class="SaveSlotAnswerButton" style="float:right;" (click)="SaveSlotAnswers()">Save Answers</button>
   </div>
   <div *ngIf="http.IsUser" style="float: left;">
     <h1>Welcome {{user}}</h1>

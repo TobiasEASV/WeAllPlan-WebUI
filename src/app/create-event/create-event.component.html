@@ -73,7 +73,9 @@
         </div>
       </div>
     </ng-template>
-
+    <div>
+      <h3 style="text-align: center">{{ viewDate | date: 'MMMM YYYY' }}</h3>
+    </div>
     <div [ngSwitch]="view">
       <mwl-calendar-month-view
         *ngSwitchCase="'month'"
@@ -149,7 +151,8 @@
       <div *ngSwitchCase="'week'">
         <mat-card class="eventSlotMatCard">
           <mat-card-title>
-            Press and drag in the calender to create an event. Events' times may be changed by dragging in either end of the event.
+            Press and drag in the calender to create an event. Events' times may be changed by dragging in either end of
+            the event.
           </mat-card-title>
         </mat-card>
       </div>

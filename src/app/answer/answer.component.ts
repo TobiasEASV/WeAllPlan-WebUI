@@ -6,6 +6,7 @@ import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../types/user";
+
 import {MatDialog} from "@angular/material/dialog";
 import {GuestCredentialDialogComponent} from "./guest-credential-dialog/guest-credential-dialog.component";
 import {SlotAnswer} from "../types/slotAnswer";
@@ -24,10 +25,10 @@ export class AnswerComponent implements OnInit {
 
 
   Dates: string[] = ['']
-  answers: Map<string, number> = new Map();
-  tempDates: string[] = ['user', ' 28/1 15:40', '29/1 15:40', '2/2 15:40 - 16:00', '12/2 15:40', '13/2 15:40', '14/2 15:40', '15/2 15:40', '16/2 15:40', '17/2 15:40', '18/2 15:40', '19/2 15:40 - 16:00', '20/2 15:40', '21/2 15:40']
+  answers: Map<string,number>= new Map();
+  tempDates: string[] = ['user', ' 28/1 15:40' , '29/1 15:40', '2/2 15:40 - 16:00', '12/2 15:40', '13/2 15:40', '14/2 15:40', '15/2 15:40', '16/2 15:40', '17/2 15:40', '18/2 15:40', '19/2 15:40 - 16:00', '20/2 15:40', '21/2 15:40']
   AnswerDictionary: Map<string, number[]> = new Map();
-  LoggedInUser: User = {
+  LoggedInUser: User ={
     Email: '',
     UserName: '',
     Id: ''
@@ -39,15 +40,17 @@ export class AnswerComponent implements OnInit {
   SlotAnswerName: string = "";
   SlotAnswerEmail: string = "";
   isEmail: boolean = this.SlotAnswerEmail.includes("@");
-
   constructor(public http: HttpService, private route: ActivatedRoute, private clipboard: Clipboard, private matSnackbar: MatSnackBar, private dialog: MatDialog) {
+
   }
 
   async ngOnInit(): Promise<void> {
 
     if (!this.http.IsUser) {
       this.user = "John Do"
-    } else {
+    }
+    else
+    {
       this.LoggedInUser = this.http.user
     }
 
@@ -64,6 +67,7 @@ export class AnswerComponent implements OnInit {
             this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
           }
         })
+
       })
     }
 
@@ -75,11 +79,11 @@ export class AnswerComponent implements OnInit {
       .then(EncryptedInviteLink => {
         this.InviteLink = (environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink)
         this.clipboard.copy(this.InviteLink)
+
         this.matSnackbar.open(this.InviteLink + " copied to clipboard.", 'close', {duration: 5000});
       })
 
   }
-
   changeResponse(response: number) {
     console.log(response)
     console.log(this.response[response])
@@ -186,13 +190,14 @@ export class AnswerComponent implements OnInit {
     let endHour;
     let endMinute;
 
-    endDate = ('' + calendarEvent).slice(0, 15);
 
-    endHour = '' + calendarEvent.getHours();
-    endHour = ('0' + endHour).slice(-2);
+      endDate = (''+calendarEvent).slice(0, 15);
 
-    endMinute = '' + calendarEvent.getMinutes();
-    endMinute = ('0' + endMinute).slice(-2);
+      endHour = '' + calendarEvent.getHours();
+      endHour = ('0' + endHour).slice(-2);
+
+      endMinute = '' + calendarEvent.getMinutes();
+      endMinute = ('0' + endMinute).slice(-2);
 
 
     return endDate + ' - ' + endHour + '.' + endMinute;

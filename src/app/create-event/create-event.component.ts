@@ -231,7 +231,6 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
         }
         this.refreshFunction();
       });
-    console.log(this.CalendarEvents)
   }
 
   refreshFunction() {
@@ -328,6 +327,7 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
 
     }
 
+    console.log(this.http.user.Id)
     this.http.saveEvent(createEvent);
   }
 

@@ -14,10 +14,7 @@
       <mat-card-title>X = Cannot attend</mat-card-title>
       <mat-card-title>? = Tentative</mat-card-title>
       <mat-card-title>✔ = Available</mat-card-title>
-
     </mat-card>
-
-
   </div>
   <div
     style=" margin: 0 0.8vw;padding:0.6vw; background: whitesmoke;float: left;width: fit-content; max-width: 70vw;  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);">
@@ -83,6 +80,7 @@
     <button id="saveButton" *ngIf="http.IsUser" class="SaveSlotAnswerButton" style="float:right; margin-right: 10px" (click)="SaveSlotAnswers()">Save Answers
     </button>
     <button  (click)="GenerateInviteLink()" class="SaveSlotAnswerButton" style="float:right"> Link Generator</button>
+
   </div>
 </div>
 

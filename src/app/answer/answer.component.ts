@@ -130,7 +130,6 @@ export class AnswerComponent implements OnInit {
           }
           slotanswers.push(slotanswer)
         }
-      console.log(slotanswers)
       await this.http.saveSlotAnswer(slotanswers).then(() => {
           this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
           this.pushSlotAnswersToDOM(slotanswers)

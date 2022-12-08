@@ -10,6 +10,7 @@ import {CalendarEvent} from "angular-calendar";
 import {EventDTO} from "../app/types/eventDTO";
 import {parseJson} from "@angular/cli/src/utilities/json-file";
 import {CreateEvent} from "../app/types/CreateEvent";
+import {SlotAnswer} from "../app/types/slotAnswer";
 
 export const customAxios = axios.create({
   baseURL: environment.baseUrl,
@@ -108,6 +109,10 @@ export class HttpService {
   async saveEvent(event: CreateEvent) {
     console.log(event)
     await customAxios.post("/Event/CreateEvent", event)
+  }
+
+  async saveSlotAnswer(slotAnswer: SlotAnswer[]){
+    await customAxios.post("/SlotAnswer/CreateSlotAnswer", slotAnswer)
   }
 
 }

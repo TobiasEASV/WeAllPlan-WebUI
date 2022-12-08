@@ -15,27 +15,9 @@
       <mat-card-title>? = Tentative</mat-card-title>
       <mat-card-title>✔ = Available</mat-card-title>
 
-
     </mat-card>
 
 
-    <div *ngIf="http.IsUser" style=" background: transparent; width: fit-content; max-width: 30vw; margin-top: 1vh">
-      <mat-card style="background: transparent">
-        <mat-card-title> Enter Informations</mat-card-title>
-        <hr>
-        <mat-form-field appearance="fill" style="width: 20vw">
-          <mat-label>Name</mat-label>
-          <input [(ngModel)]="SlotAnswerName" matInput>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill" style="width: 20vw">
-          <mat-label>Email</mat-label>
-          <input [(ngModel)]="SlotAnswerEmail" matInput>
-        </mat-form-field>
-
-      </mat-card>
-
-    </div>
   </div>
   <div
     style=" margin: 0 0.8vw;padding:0.6vw; background: whitesmoke;float: left;width: fit-content; max-width: 70vw;  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);">

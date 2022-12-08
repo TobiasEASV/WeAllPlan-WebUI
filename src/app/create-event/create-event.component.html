@@ -72,7 +72,7 @@
             </div>
           </div>
         </ng-template>
-
+    <h3 style="text-align: center">{{ viewDate | date: 'MMMM YYYY' }}</h3>
         <div [ngSwitch]="view">
           <mwl-calendar-month-view
             *ngSwitchCase="'month'"

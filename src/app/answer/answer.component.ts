@@ -60,11 +60,11 @@ export class AnswerComponent implements OnInit {
       this.event.eventSlots.forEach((eventSlot) => {
         this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime)) + "-" + this.formatEndDate(new Date(eventSlot.endTime)))
         eventSlot.slotAnswers.forEach((slotanswer) => {
-          if (this.AnswerDictionary.has(slotanswer.userName)) {
+          if (this.AnswerDictionary.has(slotanswer.email)) {
             // @ts-ignore
-            this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
+            this.AnswerDictionary.get(slotanswer.email).push(slotanswer.answer)
           } else {
-            this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
+            this.AnswerDictionary.set(slotanswer.email, [slotanswer.answer])
           }
         })
 
@@ -129,23 +129,23 @@ export class AnswerComponent implements OnInit {
             userName: result[1]
           }
           slotanswers.push(slotanswer)
-          await this.http.saveSlotAnswer(slotanswers).then(() => {
-              this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
-            this.pushSlotAnswersToDOM(slotanswers)
-            }
-          )
-
         }
+      console.log(slotanswers)
+      await this.http.saveSlotAnswer(slotanswers).then(() => {
+          this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
+          this.pushSlotAnswersToDOM(slotanswers)
+        }
+      )
     })
   }
 
   async pushSlotAnswersToDOM(slotanswers: SlotAnswer[]){
     slotanswers.forEach((slotanswer)=>{
-      if (this.AnswerDictionary.has(slotanswer.userName)) {
+      if (this.AnswerDictionary.has(slotanswer.email)) {
         // @ts-ignore
-        this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
+        this.AnswerDictionary.get(slotanswer.email).push(slotanswer.answer)
       } else {
-        this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
+        this.AnswerDictionary.set(slotanswer.email, [slotanswer.answer])
       }
     })
 

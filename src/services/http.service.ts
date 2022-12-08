@@ -38,7 +38,7 @@ export class HttpService {
   constructor(private matSnackbar: MatSnackBar, private route: Router) {
     customAxios.interceptors.response.use(
       response => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           this.matSnackbar.open("Event created.", 'close', {duration: 4000});
         }
         return response;
@@ -107,9 +107,13 @@ export class HttpService {
 
   async saveEvent(event: CreateEvent) {
     await customAxios.post("/Event/CreateEvent", event)
-      .then(() => {
-        this.matSnackbar.open(event.title + " has been created", 'close', {duration: 4000});
-        this.route.navigate(["/Dashboard"])
+      .then(response => {
+        if(response.status === 401){
+          this.matSnackbar.open("Error: " + response.data, 'close', {duration: 4000});
+        }else {
+          this.matSnackbar.open(event.title + " has been created", 'close', {duration: 4000});
+          this.route.navigate(["/Dashboard"])
+        }
       });
   }
 

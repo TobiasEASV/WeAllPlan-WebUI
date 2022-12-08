@@ -6,6 +6,10 @@ import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
 import {Event} from "../app/types/event";
 import {environment} from "../environments/environment";
+import {CalendarEvent} from "angular-calendar";
+import {EventDTO} from "../app/types/eventDTO";
+import {parseJson} from "@angular/cli/src/utilities/json-file";
+import {CreateEvent} from "../app/types/CreateEvent";
 
 export const customAxios = axios.create({
   baseURL: environment.baseUrl,
@@ -37,11 +41,11 @@ export class HttpService {
         }
         return response;
       }, rejected => {
-        if (rejected.response.status >= 400 && rejected.response.status < 500) {
+        /*if (rejected.response.status >= 400 && rejected.response.status < 500) {
           matSnackbar.open("Error: " + rejected.response.data, 'close', {duration: 4000});
         } else if (rejected.response.status > 499) {
           this.matSnackbar.open("Something went wrong on our end.", 'close', {duration: 4000});
-        }
+        }*/
         catchError(rejected);
       }
     )
@@ -93,6 +97,17 @@ export class HttpService {
   deleteEvent(EventId: string, UserId:string){
     let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
 
+  }
+  
+  async GetEventSlotsFromEvent(EventId: string) {
+    let successResult = await customAxios.get<Event>('/EventSlots/GetEventSlots', {params: {EventId: EventId}})
+    return successResult.data
+  }
+
+
+  async saveEvent(event: CreateEvent) {
+    console.log(event)
+    await customAxios.post("/Event/CreateEvent", event)
   }
 
 }

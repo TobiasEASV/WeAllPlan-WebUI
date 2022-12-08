@@ -30,12 +30,17 @@ export class AnswerComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (!this.http.IsUser) {
-      this.user = "John Do"
-    }
+
+   if(!this.http.IsUser){
+        this.user = "John Do"
+      }
+        this.event = this.route.snapshot.data['Event'];
+        this.user = this.http.user.UserName
+
+
     this.event = this.route.snapshot.data['Event'];
     this.user = this.http.user.UserName
-
+    if(this.event.eventSlots){
     this.event.eventSlots.forEach((eventSlot) => {
       this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime))+ "-" + this.formatEndDate(new Date(eventSlot.endTime)))
       eventSlot.slotAnswers.forEach((slotanswer) => {
@@ -49,7 +54,8 @@ export class AnswerComponent implements OnInit {
         }
 
       })
-    })
+    })}
+
     this.response = new Array(this.Dates.length - 1).fill(0)
   }
 
@@ -70,12 +76,14 @@ export class AnswerComponent implements OnInit {
   }
 
   SaveSlotAnswers() {
-    let map = new Map<any,number>()
-    for(let i =0; i<this.event.eventSlots.length;i++)
-    {
-      map.set(this.event.eventSlots[i],this.response[i])
+    if(this.event.eventSlots){
+      for(let i =0; i<this.event.eventSlots.length;i++)
+      {
+
+      }
     }
-    console.log(map)
+
+
   }
 
   formatStartDate(calendarEvent: Date) {

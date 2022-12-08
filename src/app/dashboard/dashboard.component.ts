@@ -30,8 +30,12 @@ export class DashboardComponent implements OnInit {
     var result = confirm("Want to delete: " + event.title)
     if (result)
     {
-      this.http.deleteEvent(event.id, this.http.user.Id);
-      this.Events = this.Events.filter((e:{id:any}) => e.id != event.id);
+      if (event.id!=undefined) {
+        this.http.deleteEvent(event.id, this.http.user.Id);
+        // @ts-ignore
+        this.Events = this.Events.filter((e:{id}) => e.id != event.id);
+      }
+
     }
 
   }
@@ -47,7 +51,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ViewEventAnswers(event: Event) {
-    this.http.SelectedEventId = event.id
-    this.router.navigate(['Answer'])
+    if(event.id) {
+      this.http.SelectedEventId = event.id
+      this.router.navigate(['Answer'])
+    }
+
   }
 }

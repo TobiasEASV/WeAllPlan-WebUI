@@ -2,9 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   Injectable,
-  OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
@@ -12,15 +10,22 @@ import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
   CalendarEventTitleFormatter,
-  CalendarView
+  CalendarNativeDateFormatter,
+  CalendarView,
+  DateFormatterParams
 } from 'angular-calendar';
-import { WeekViewHourSegment } from 'calendar-utils';
-import { fromEvent } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
-import { addDays, addHours, addMinutes, endOfWeek } from 'date-fns';
-
+import {WeekViewHourSegment} from 'calendar-utils';
+import {fromEvent, map, Observable, startWith, Subject} from 'rxjs';
+import {finalize, takeUntil} from 'rxjs/operators';
+import {addDays, addMinutes, endOfWeek} from 'date-fns';
 import {FormControl} from "@angular/forms";
-import {map, Observable, startWith, Subject} from "rxjs";
+import {HttpService} from "../../services/http.service";
+import {EventSlot} from "../types/eventSlot";
+import {EventDTO} from "../types/eventDTO";
+import {SlotAnswer} from "../types/slotAnswer";
+import {Event} from "../types/event";
+import {CreateEvent, TimeSlot} from "../types/CreateEvent";
+
 
 function floorToNearest(amount: number, precision: number) {
   return Math.floor(amount / precision) * precision;
@@ -48,6 +53,14 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   }
 }
 
+let eventDTO: EventDTO;
+
+let slotAnswer: SlotAnswer;
+
+
+let eventSlot: EventSlot;
+let eventSlotDTO: EventSlot[]
+
 @Component({
   selector: 'app-create-event',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,17 +82,38 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
   ]
 })
 
-export class CreateEventComponent implements OnInit {
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CreateEventComponent extends CalendarNativeDateFormatter implements OnInit {
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   CalendarView = CalendarView;
   refresh = new Subject<void>();
   // autocomplete input for EventSlot
-  myControlStartTime = new FormControl('');
-  myControlEndTime = new FormControl('');
+  myControlStartTime = new FormControl('00:00');
+  myControlEndTime = new FormControl('00:00');
   dragToCreateActive = false;
-  weekStartsOn: 0 = 0;
+  weekStartsOn: 1 = 1; //This makes the calendar start on Mondays in week view
   filteredOptions: Observable<string[]> | any;
+
+
+
+  //Event
+  EventTitle: string = '';
+  EventLocation: string = '';
+  EventDescription: string = '';
+  CalendarEvents: Array<CalendarEvent> = [];
+  TimeSlotDTO: TimeSlot[] = [];
+
+
+  public override weekViewHour({date, locale}: DateFormatterParams): string {
+    return new Intl.DateTimeFormat('ca', {
+      hour: 'numeric',
+      minute: 'numeric'
+    }).format(date);
+  }
 
   options: string[] = [
     '00.00', '00.15', '00.30', "00.45",
@@ -108,9 +142,10 @@ export class CreateEventComponent implements OnInit {
     '23.00', '23.15', '23.30', "23.45",
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private http: HttpService) {
+    // @ts-ignore
+    super();
   }
-
 
   ngOnInit() {
     this.filteredOptions = this.myControlStartTime.valueChanges.pipe(
@@ -137,8 +172,6 @@ export class CreateEventComponent implements OnInit {
     this.refreshFunction();
   }
 
-  events: CalendarEvent[] = [];
-
   // filters time
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -154,6 +187,7 @@ export class CreateEventComponent implements OnInit {
     const dragToSelectEvent: CalendarEvent = {
       title: 'New event',
       start: segment.date,
+      end: segment.date,
       draggable: true,
       resizable: {
         beforeStart: true, // this allows you to configure the sides the event is resizable from
@@ -163,7 +197,7 @@ export class CreateEventComponent implements OnInit {
         tmpEvent: true,
       },
     };
-    this.events = [...this.events, dragToSelectEvent];
+    this.CalendarEvents = [...this.CalendarEvents, dragToSelectEvent];
     const segmentPosition = segmentElement.getBoundingClientRect();
     this.dragToCreateActive = true;
     const endOfView = endOfWeek(this.viewDate, {
@@ -197,13 +231,106 @@ export class CreateEventComponent implements OnInit {
         }
         this.refreshFunction();
       });
-    console.log(this.events)
+    console.log(this.CalendarEvents)
   }
 
   refreshFunction() {
-    this.events = [...this.events];
+    this.CalendarEvents = [...this.CalendarEvents];
     this.cdr.detectChanges();
   }
 
 
+  formatStartDate(calendarEvent: CalendarEvent<any>) {
+    let startDate = ('' + calendarEvent.start).slice(0, 15);
+
+    let startHour = '' + calendarEvent.start.getHours();
+    startHour = ('0' + startHour).slice(-2);
+
+    let startMinute = '' + calendarEvent.start.getMinutes();
+    startMinute = ('0' + startMinute).slice(-2);
+
+    return 'Start: ' + startDate + ' - ' + startHour + '.' + startMinute;
+  }
+
+  formatEndDate(calendarEvent: CalendarEvent<any>) {
+
+    let endDate;
+    let endHour;
+    let endMinute;
+
+    if (calendarEvent.end == undefined) {
+      endDate = ('' + calendarEvent.start).slice(0, 15);
+      endHour = ('0' + calendarEvent.start.getHours()).slice(-2);
+      endMinute = ('0' + calendarEvent.start.getMinutes()).slice(-2);
+    } else {
+      endDate = ('' + calendarEvent.end).slice(0, 15);
+
+      endHour = '' + calendarEvent?.end?.getHours();
+      endHour = ('0' + endHour).slice(-2);
+
+      endMinute = '' + calendarEvent?.end?.getMinutes();
+      endMinute = ('0' + endMinute).slice(-2);
+    }
+
+    return 'End: ' + endDate + ' - ' + endHour + '.' + endMinute;
+  }
+
+  createEvent(date: Date) {
+    let startDate = new Date(date)
+    let endDate = new Date(date)
+
+    startDate.setHours(parseInt(this.myControlStartTime.value?.slice(0, 2) || ''))
+    startDate.setMinutes(parseInt(this.myControlStartTime.value?.slice(3, 5) || ''))
+
+    endDate.setHours(parseInt(this.myControlEndTime.value?.slice(0, 2) || ''))
+    endDate.setMinutes(parseInt(this.myControlEndTime.value?.slice(3, 5) || ''))
+
+    const clickToCreateEvent: CalendarEvent = {
+      title: 'New event',
+      start: startDate,
+      end: endDate,
+      draggable: true,
+      resizable: {
+        beforeStart: true, // this allows you to configure the sides the event is resizable from
+        afterEnd: true,
+      },
+      meta: {
+        tmpEvent: true,
+      },
+    };
+    this.CalendarEvents = [...this.CalendarEvents, clickToCreateEvent];
+  }
+
+  DeleteEvent(calendarEvent: CalendarEvent<any>) {
+    this.CalendarEvents = this.CalendarEvents.filter((event) =>
+      (event.start != calendarEvent.start && event.end != calendarEvent.end));
+  }
+
+
+  saveEvent() {
+
+    let timeslot: TimeSlot;
+
+    this.CalendarEvents.forEach(value =>
+
+      this.TimeSlotDTO.push(timeslot = {
+          startTime: value.start,
+          endTime: value.end
+    }))
+
+    let createEvent: CreateEvent = {
+      title: this.EventTitle,
+      description: this.EventDescription,
+      location: this.EventLocation,
+      ownerId: this.http.user.Id,
+      timeSlots: this.TimeSlotDTO,
+
+
+    }
+
+    this.http.saveEvent(createEvent);
+  }
+
+
 }
+

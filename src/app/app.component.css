@@ -1,5 +1,6 @@
 .Primary{
   font-weight: bold;
+  margin: 0;
 }
 
 .headerSpan{
@@ -11,6 +12,8 @@
 
 .Header{
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  padding: 0;
+
 }
 .HeaderMenuLoggedIn{
   background-image: url("../../src/images/user.png");

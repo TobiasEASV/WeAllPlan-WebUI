@@ -50,10 +50,11 @@ export class AnswerResolver implements Resolve<Event> {
     }
     this.EventId = this.http.SelectedEventId;
     let successResult =  await this.http.GetEventToAnswer(this.EventId);
+
     if(successResult == undefined){
       return false
-    }else
-      return successResult;
+    }else{
+      return successResult;}
   }
 }
 

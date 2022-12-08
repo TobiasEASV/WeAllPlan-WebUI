@@ -2,7 +2,7 @@
 <body class="Primary">
 <mat-toolbar class="Header">
   <span class="headerSpan" routerLink="/Home">We All Plan </span>
-
+  <p *ngIf="http.IsUser">{{this.http.user.Email}}</p>
   <button mat-icon-button [matMenuTriggerFor]="menu" [ngSwitch]="http.IsUser">
     <mat-icon *ngSwitchCase="false" class="HeaderMenuAnonymous"></mat-icon>
     <mat-icon *ngSwitchCase="true" class="HeaderMenuLoggedIn"></mat-icon>

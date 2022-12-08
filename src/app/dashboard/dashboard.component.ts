@@ -19,11 +19,13 @@ export class DashboardComponent implements OnInit {
 
   Events : Event[] = Event;
   User: User = User;
+  UserHasEvents: boolean = false;
   constructor(public http: HttpService,private route: ActivatedRoute, private matSnackbar: MatSnackBar, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
     this.Events = this.route.snapshot.data['Event'];
     this.User = this.http.user
+    this.UserHasEvents = this.Events.length == 0;
   }
 
   DeleteEvent(event: Event) {

@@ -96,7 +96,8 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
   myControlEndTime = new FormControl('00:00');
   dragToCreateActive = false;
   weekStartsOn: 1 = 1; //This makes the calendar start on Mondays in week view
-  filteredOptions: Observable<string[]> | any;
+  filteredOptionsStartTime: Observable<string[]> | any;
+  filteredOptionsEndTime: Observable<string[]> | any;
 
 
 
@@ -148,11 +149,11 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
   }
 
   ngOnInit() {
-    this.filteredOptions = this.myControlStartTime.valueChanges.pipe(
+    this.filteredOptionsStartTime = this.myControlStartTime.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
-    this.filteredOptions = this.myControlEndTime.valueChanges.pipe(
+    this.filteredOptionsEndTime = this.myControlEndTime.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),
     );
@@ -172,12 +173,14 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
     this.refreshFunction();
   }
 
-  // filters time
+  // filters start time
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+    const filterValueStart = value.toLowerCase();
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    return this.options.filter(option => option.toLowerCase().includes(filterValueStart));
   }
+
+
 
   startDragToCreate(
     segment: WeekViewHourSegment,
@@ -313,9 +316,9 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
     this.CalendarEvents.forEach(value =>
 
       this.TimeSlotDTO.push(timeslot = {
-          startTime: value.start,
-          endTime: value.end
-    }))
+        startTime: value.start,
+        endTime: value.end
+      }))
 
     let createEvent: CreateEvent = {
       title: this.EventTitle,
@@ -327,7 +330,6 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
 
     }
 
-    console.log(this.http.user.Id)
     this.http.saveEvent(createEvent);
   }
 

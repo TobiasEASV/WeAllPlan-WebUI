@@ -10,6 +10,7 @@ import {CalendarEvent} from "angular-calendar";
 import {EventDTO} from "../app/types/eventDTO";
 import {parseJson} from "@angular/cli/src/utilities/json-file";
 import {CreateEvent} from "../app/types/CreateEvent";
+import {Router} from "@angular/router";
 
 export const customAxios = axios.create({
   baseURL: environment.baseUrl,
@@ -33,7 +34,7 @@ export class HttpService {
   IsUser: boolean = false;
   SelectedEventId: string ='';
 
-  constructor(private matSnackbar: MatSnackBar) {
+  constructor(private matSnackbar: MatSnackBar, private route: Router) {
     customAxios.interceptors.response.use(
       response => {
         if (response.status == 201) {
@@ -41,11 +42,11 @@ export class HttpService {
         }
         return response;
       }, rejected => {
-        /*if (rejected.response.status >= 400 && rejected.response.status < 500) {
+        if (rejected.response.status >= 400 && rejected.response.status < 500) {
           matSnackbar.open("Error: " + rejected.response.data, 'close', {duration: 4000});
         } else if (rejected.response.status > 499) {
           this.matSnackbar.open("Something went wrong on our end.", 'close', {duration: 4000});
-        }*/
+        }
         catchError(rejected);
       }
     )
@@ -73,7 +74,6 @@ export class HttpService {
   }
 
   async GetEventToAnswer(EventId: string | null = ''): Promise<Event> {
-    console.log(EventId)
     let successResult = await customAxios.get<Event>('/Event/GetEvent', {params: {eventId: EventId}})
     return successResult.data
   }
@@ -91,7 +91,7 @@ export class HttpService {
     this.user.Id = Token.Id;
     this.user.UserName = Token.UserName;
     this.user.Email = Token.Email;
-    this.IsUser = true;
+    this.IsUser = true
   }
   deleteEvent(EventId: string, UserId:string){
     let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
@@ -105,10 +105,10 @@ export class HttpService {
 
 
   async saveEvent(event: CreateEvent) {
-    console.log(event)
     await customAxios.post("/Event/CreateEvent", event)
+      .then(() => {
+        this.matSnackbar.open(event.title + " has been created", 'close', {duration: 4000});
+        this.route.navigate(["/Dashboard"])
+      });
   }
 }
-
-
-

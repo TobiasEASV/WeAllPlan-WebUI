@@ -14,6 +14,7 @@ import {EventSlot} from "../types/eventSlot";
 
 
 let Event: Event
+let counter :number = 0;
 
 
 @Component({
@@ -53,7 +54,6 @@ export class AnswerComponent implements OnInit {
     } else {
       this.LoggedInUser = this.http.user
     }
-    let counter = 0
 
 
     this.event = this.route.snapshot.data['Event'];
@@ -154,14 +154,12 @@ export class AnswerComponent implements OnInit {
   }
 
   async pushSlotAnswersToDOM(slotanswers: SlotAnswer[]) {
-    this.AnswerDictionary.set(slotanswers[0], [slotanswers[0].answer])
-    slotanswers.forEach((slotanswer) => {
-        //@ts-ignore
-          let key = Array.from(this.AnswerDictionary.keys())[counter+1]
-
-            // @ts-ignore
-            this.AnswerDictionary.get(key).push([slotanswer.answer])
-        })
+    let answers = []
+    for (let i =0; i<slotanswers.length; i++)
+    {
+      answers.push(slotanswers[i].answer)
+    }
+    this.AnswerDictionary.set(slotanswers[0], answers)
   }
 
 

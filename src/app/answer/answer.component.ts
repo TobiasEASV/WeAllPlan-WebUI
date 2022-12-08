@@ -58,7 +58,7 @@ export class AnswerComponent implements OnInit {
 
     this.event = this.route.snapshot.data['Event'];
     this.user = this.http.user.UserName
-
+    
     this.event.eventSlots?.forEach((eventslots)=>
     {
       this.Dates.push(this.formatStartDate(new Date(eventslots.startTime)) + "-" + this.formatEndDate(new Date(eventslots.endTime)))
@@ -153,6 +153,7 @@ export class AnswerComponent implements OnInit {
     })
   }
 
+
   async pushSlotAnswersToDOM(slotanswers: SlotAnswer[]) {
     let answers = []
     for (let i =0; i<slotanswers.length; i++)
@@ -160,6 +161,7 @@ export class AnswerComponent implements OnInit {
       answers.push(slotanswers[i].answer)
     }
     this.AnswerDictionary.set(slotanswers[0], answers)
+
   }
 
 

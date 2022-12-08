@@ -98,7 +98,7 @@ export class HttpService {
     let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
 
   }
-  
+
   async GetEventSlotsFromEvent(EventId: string) {
     let successResult = await customAxios.get<Event>('/EventSlots/GetEventSlots', {params: {EventId: EventId}})
     return successResult.data

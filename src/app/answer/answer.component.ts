@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {HttpService} from "../../services/http.service";
 import {Event} from "../types/event";
-
+import {Clipboard} from '@angular/cdk/clipboard';
 import {ActivatedRoute} from "@angular/router";
 import {environment} from "../../environments/environment";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {User} from "../types/user";
 
 
 let Event: Event
@@ -12,31 +14,41 @@ let Event: Event
 @Component({
   selector: 'app-answer',
   templateUrl: './answer.component.html',
-  styleUrls: ['./answer.component.css']
+  styleUrls: ['./answer.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AnswerComponent implements OnInit {
 
-  Dates: string[] = ['user']
+
+  Dates: string[] = ['']
   answers: Map<string,number>= new Map();
   tempDates: string[] = ['user', ' 28/1 15:40' , '29/1 15:40', '2/2 15:40 - 16:00', '12/2 15:40', '13/2 15:40', '14/2 15:40', '15/2 15:40', '16/2 15:40', '17/2 15:40', '18/2 15:40', '19/2 15:40 - 16:00', '20/2 15:40', '21/2 15:40']
   AnswerDictionary: Map<string, number[]> = new Map();
-
+  LoggedInUser: User ={
+    Email: '',
+    UserName: '',
+    Id: ''
+  };
   user = "";
   event: Event = Event
   InviteLink: string = "";
   response: number[] = [];
+  SlotAnswerName: string = "";
+  SlotAnswerEmail: string = "";
+  isEmail: boolean = this.SlotAnswerEmail.includes("@");
 
-  constructor(public http: HttpService, private route: ActivatedRoute) {
+  constructor(public http: HttpService, private route: ActivatedRoute, private clipboard: Clipboard, private matSnackbar: MatSnackBar) {
   }
 
   async ngOnInit(): Promise<void> {
 
-   if(!this.http.IsUser){
-        this.user = "John Do"
-      }
-        this.event = this.route.snapshot.data['Event'];
-        this.user = this.http.user.UserName
-
+    if (!this.http.IsUser) {
+      this.user = "John Do"
+    }
+    else
+    {
+      this.LoggedInUser = this.http.user
+    }
 
     this.event = this.route.snapshot.data['Event'];
     this.user = this.http.user.UserName
@@ -61,7 +73,12 @@ export class AnswerComponent implements OnInit {
 
   GenerateInviteLink() {
     this.http.GenerateInviteLink(this.http.SelectedEventId)
-      .then(EncryptedInviteLink => this.InviteLink = environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink)
+      .then(EncryptedInviteLink => {
+        this.InviteLink = ( environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink)
+        this.clipboard.copy( this.InviteLink)
+        this.matSnackbar.open(this.InviteLink + " copied to clipboard.", 'close', {duration: 5000});
+      })
+
   }
   changeResponse(response: number) {
     console.log(response)
@@ -76,11 +93,13 @@ export class AnswerComponent implements OnInit {
   }
 
   SaveSlotAnswers() {
-    if(this.event.eventSlots){
-      for(let i =0; i<this.event.eventSlots.length;i++)
-      {
 
-      }
+
+    if (this.event.eventSlots)
+    for(let i =0; i<this.event.eventSlots.length;i++)
+    {
+      console.log("eventslotID: " + this.event.eventSlots[i].id +"  ResponseId: " +this.response[i] + "  " + this.SlotAnswerName + "   " + this.SlotAnswerEmail);
+
     }
 
 

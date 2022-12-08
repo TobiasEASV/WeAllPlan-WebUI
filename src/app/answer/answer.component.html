@@ -14,34 +14,13 @@
       <mat-card-title>X = Cannot attend</mat-card-title>
       <mat-card-title>? = Tentative</mat-card-title>
       <mat-card-title>✔ = Available</mat-card-title>
-
-
     </mat-card>
-
-
-    <div *ngIf="http.IsUser" style=" background: transparent; width: fit-content; max-width: 30vw; margin-top: 1vh">
-      <mat-card style="background: transparent">
-        <mat-card-title> Enter Informations</mat-card-title>
-        <hr>
-        <mat-form-field appearance="fill" style="width: 20vw">
-          <mat-label>Name</mat-label>
-          <input [(ngModel)]="SlotAnswerName" matInput>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill" style="width: 20vw">
-          <mat-label>Email</mat-label>
-          <input [(ngModel)]="SlotAnswerEmail" matInput>
-        </mat-form-field>
-
-      </mat-card>
-
-    </div>
   </div>
   <div
     style=" margin: 0 0.8vw;padding:0.6vw; background: whitesmoke;float: left;width: fit-content; max-width: 70vw;  box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);">
     <div
       style="overflow: auto;  max-height: 75vh;">
-      <table>
+      <table id="AnswerTable">
         <tr style="background: whitesmoke;z-index: 5;top: 0; position: sticky;">
           <th *ngFor="let dates of Dates">
             <mat-card class="centerAllignText" style=" background: whitesmoke; border-style: none; box-shadow:none">
@@ -49,7 +28,7 @@
             </mat-card>
           </th>
         </tr>
-        <tr>
+        <tr id="Answers">
           <td style="left: 0; position: sticky;z-index: 4;">
             <mat-card class="centerAllignText" style=" background: whitesmoke; border-style: none; box-shadow:none">
               <mat-card-title class="matTitleCardAnswer">YOU</mat-card-title>
@@ -98,9 +77,10 @@
         <br>
       </table>
     </div>
-    <button *ngIf="http.IsUser" class="SaveSlotAnswerButton" style="float:right; margin-right: 10px" (click)="SaveSlotAnswers()">Save Answers
+    <button id="saveButton" *ngIf="http.IsUser" class="SaveSlotAnswerButton" style="float:right; margin-right: 10px" (click)="SaveSlotAnswers()">Save Answers
     </button>
-    <button (click)="GenerateInviteLink()" class="SaveSlotAnswerButton" style="float:right"> Link Generator</button>
+    <button  (click)="GenerateInviteLink()" class="SaveSlotAnswerButton" style="float:right"> Link Generator</button>
+
   </div>
 </div>
 

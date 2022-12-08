@@ -10,6 +10,7 @@ import {CalendarEvent} from "angular-calendar";
 import {EventDTO} from "../app/types/eventDTO";
 import {parseJson} from "@angular/cli/src/utilities/json-file";
 import {CreateEvent} from "../app/types/CreateEvent";
+import {SlotAnswer} from "../app/types/slotAnswer";
 import {Router} from "@angular/router";
 
 export const customAxios = axios.create({
@@ -111,4 +112,9 @@ export class HttpService {
         this.route.navigate(["/Dashboard"])
       });
   }
+
+  async saveSlotAnswer(slotAnswer: SlotAnswer[]){
+    await customAxios.post("/SlotAnswer/CreateSlotAnswer", slotAnswer)
+  }
+
 }

@@ -32,6 +32,7 @@ import { CreateEventComponent } from './create-event/create-event.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { ErrorPagesComponent } from './erorr-pages/error-pages.component';
 import {MatTableModule} from "@angular/material/table";
+import { GuestCredentialDialogComponent } from './answer/guest-credential-dialog/guest-credential-dialog.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {MatTableModule} from "@angular/material/table";
     DashboardComponent,
     AnswerComponent,
     CreateEventComponent,
-    ErrorPagesComponent
+    ErrorPagesComponent,
+    GuestCredentialDialogComponent
   ],
   imports: [
     BrowserModule,

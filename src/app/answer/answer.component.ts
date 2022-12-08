@@ -7,6 +7,10 @@ import {environment} from "../../environments/environment";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {User} from "../types/user";
 
+import {MatDialog} from "@angular/material/dialog";
+import {GuestCredentialDialogComponent} from "./guest-credential-dialog/guest-credential-dialog.component";
+import {SlotAnswer} from "../types/slotAnswer";
+
 
 let Event: Event
 
@@ -36,8 +40,8 @@ export class AnswerComponent implements OnInit {
   SlotAnswerName: string = "";
   SlotAnswerEmail: string = "";
   isEmail: boolean = this.SlotAnswerEmail.includes("@");
+  constructor(public http: HttpService, private route: ActivatedRoute, private clipboard: Clipboard, private matSnackbar: MatSnackBar, private dialog: MatDialog) {
 
-  constructor(public http: HttpService, private route: ActivatedRoute, private clipboard: Clipboard, private matSnackbar: MatSnackBar) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -52,21 +56,20 @@ export class AnswerComponent implements OnInit {
 
     this.event = this.route.snapshot.data['Event'];
     this.user = this.http.user.UserName
-    if(this.event.eventSlots){
-    this.event.eventSlots.forEach((eventSlot) => {
-      this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime))+ "-" + this.formatEndDate(new Date(eventSlot.endTime)))
-      eventSlot.slotAnswers.forEach((slotanswer) => {
-        if (this.AnswerDictionary.has(slotanswer.userName))
-        {
-          // @ts-ignore
-          this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
-        }
-        else{
-          this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
-        }
+    if (this.event.eventSlots) {
+      this.event.eventSlots.forEach((eventSlot) => {
+        this.Dates.push(this.formatStartDate(new Date(eventSlot.startTime)) + "-" + this.formatEndDate(new Date(eventSlot.endTime)))
+        eventSlot.slotAnswers.forEach((slotanswer) => {
+          if (this.AnswerDictionary.has(slotanswer.userName)) {
+            // @ts-ignore
+            this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
+          } else {
+            this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
+          }
+        })
 
       })
-    })}
+    }
 
     this.response = new Array(this.Dates.length - 1).fill(0)
   }
@@ -74,8 +77,9 @@ export class AnswerComponent implements OnInit {
   GenerateInviteLink() {
     this.http.GenerateInviteLink(this.http.SelectedEventId)
       .then(EncryptedInviteLink => {
-        this.InviteLink = ( environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink)
-        this.clipboard.copy( this.InviteLink)
+        this.InviteLink = (environment.baseDomainUrl + "Answer/Share/" + EncryptedInviteLink)
+        this.clipboard.copy(this.InviteLink)
+
         this.matSnackbar.open(this.InviteLink + " copied to clipboard.", 'close', {duration: 5000});
       })
 
@@ -92,21 +96,84 @@ export class AnswerComponent implements OnInit {
     }
   }
 
-  SaveSlotAnswers() {
-
-
+  async saveSlotAnswersFromUser(slotanswers: SlotAnswer[]){
     if (this.event.eventSlots)
-    for(let i =0; i<this.event.eventSlots.length;i++)
-    {
-      console.log("eventslotID: " + this.event.eventSlots[i].id +"  ResponseId: " +this.response[i] + "  " + this.SlotAnswerName + "   " + this.SlotAnswerEmail);
-
-    }
-
+      for (let i = 0; i < this.event.eventSlots.length; i++) {
+        let slotanswer: SlotAnswer = {
+          answer: this.response[i],
+          email: this.http.user.Email,
+          eventSlotId: this.event.eventSlots[i].id,
+          id: 0,
+          userName: this.http.user.UserName
+        }
+        slotanswers.push(slotanswer)
+      }
+    await this.http.saveSlotAnswer(slotanswers).then(() => {
+      this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
+        this.pushSlotAnswersToDOM(slotanswers);
+    })
 
   }
 
+  async saveSlotAnswersFromGuest(slotanswers: SlotAnswer[])
+  {
+    let result = this.dialog.open(GuestCredentialDialogComponent);
+    result.afterClosed().subscribe(async result => {
+      if (this.event.eventSlots)
+        for (let i = 0; i < this.event.eventSlots.length; i++) {
+          let slotanswer: SlotAnswer = {
+            answer: this.response[i],
+            email: result[0],
+            eventSlotId: this.event.eventSlots[i].id,
+            id: 0,
+            userName: result[1]
+          }
+          slotanswers.push(slotanswer)
+          await this.http.saveSlotAnswer(slotanswers).then(() => {
+              this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
+            this.pushSlotAnswersToDOM(slotanswers)
+            }
+          )
+
+        }
+    })
+  }
+
+  async pushSlotAnswersToDOM(slotanswers: SlotAnswer[]){
+    slotanswers.forEach((slotanswer)=>{
+      if (this.AnswerDictionary.has(slotanswer.userName)) {
+        // @ts-ignore
+        this.AnswerDictionary.get(slotanswer.userName).push(slotanswer.answer)
+      } else {
+        this.AnswerDictionary.set(slotanswer.userName, [slotanswer.answer])
+      }
+    })
+
+  }
+
+  async SaveSlotAnswers() {
+    let slotanswers: SlotAnswer[] = []
+    if (this.http.IsUser) {
+      await this.saveSlotAnswersFromUser(slotanswers);
+
+    } else {
+      await this.saveSlotAnswersFromGuest(slotanswers);
+
+    }
+    let table = document.getElementById("AnswerTable")
+    let answers = document.getElementById("Answers")
+    if (answers!=null && table != null) {
+      table.removeChild(answers)
+      let button = document.getElementById("saveButton")
+      if (button!=null)
+      {
+        button.setAttribute("disabled", "true")
+      }
+    }
+  }
+
   formatStartDate(calendarEvent: Date) {
-    let startDate = (''+calendarEvent).slice(0, 15);
+    let startDate = ('' + calendarEvent).slice(0, 15);
 
     let startHour = '' + calendarEvent.getHours();
     startHour = ('0' + startHour).slice(-2);
@@ -122,6 +189,7 @@ export class AnswerComponent implements OnInit {
     let endDate;
     let endHour;
     let endMinute;
+
 
       endDate = (''+calendarEvent).slice(0, 15);
 

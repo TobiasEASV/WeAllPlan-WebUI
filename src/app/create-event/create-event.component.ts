@@ -24,6 +24,7 @@ import {EventSlot} from "../types/eventSlot";
 import {EventDTO} from "../types/eventDTO";
 import {SlotAnswer} from "../types/slotAnswer";
 import {Event} from "../types/event";
+import {CreateEvent, TimeSlot} from "../types/CreateEvent";
 
 
 function floorToNearest(amount: number, precision: number) {
@@ -104,9 +105,7 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
   EventLocation: string = '';
   EventDescription: string = '';
   CalendarEvents: Array<CalendarEvent> = [];
-  EventSlotDTO: EventSlot[] | any = [];
-  eventDTO: EventDTO =  {
-  }
+  TimeSlotDTO: TimeSlot[] = [];
 
 
   public override weekViewHour({date, locale}: DateFormatterParams): string {
@@ -309,39 +308,27 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
 
 
   saveEvent() {
-    this.eventDTO.title = this.EventTitle;
-    this.eventDTO.userId = this.http.user.Id
-    this.eventDTO.description = this.EventDescription;
-    this.eventDTO.location = this.EventLocation;
 
-    let slotAnswer = {
-      id: 0,
-      userName: '',
-      email:'',
-      eventSlot: 0,
-      answer: 0
-    }
+    let timeslot: TimeSlot;
 
     this.CalendarEvents.forEach(value =>
 
-    this.EventSlotDTO.push(eventSlot = {
-      id: '',
-      event: this.eventDTO,
-      startTime: value.start,
-      endTime: value.end,
-      confirmed: false,
-      slotAnswers: [slotAnswer]
-    })
-      )
+      this.TimeSlotDTO.push(timeslot = {
+          startTime: value.start,
+          endTime: value.end
+    }))
+
+    let createEvent: CreateEvent = {
+      title: this.EventTitle,
+      description: this.EventDescription,
+      location: this.EventLocation,
+      ownerId: this.http.user.Id,
+      timeSlots: this.TimeSlotDTO,
 
 
-    this.eventDTO.eventSlots = this.EventSlotDTO
+    }
 
-
-
-
-
-    this.http.saveEvent( this.eventDTO);
+    this.http.saveEvent(createEvent);
   }
 
 

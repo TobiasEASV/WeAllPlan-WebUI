@@ -9,6 +9,7 @@ import {environment} from "../environments/environment";
 import {CalendarEvent} from "angular-calendar";
 import {EventDTO} from "../app/types/eventDTO";
 import {parseJson} from "@angular/cli/src/utilities/json-file";
+import {CreateEvent} from "../app/types/CreateEvent";
 
 export const customAxios = axios.create({
   baseURL: environment.baseUrl,
@@ -104,7 +105,7 @@ export class HttpService {
   }
 
 
-  async saveEvent(event: EventDTO) {
+  async saveEvent(event: CreateEvent) {
     console.log(event)
     await customAxios.post("/Event/CreateEvent", event)
   }

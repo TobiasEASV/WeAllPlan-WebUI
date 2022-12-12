@@ -1,0 +1,47 @@
+<link href="dashboard.component.css" rel="stylesheet">
+<mat-card class="HeaderCard">
+  <mat-card-title>
+    Your Events
+  </mat-card-title>
+</mat-card>
+<div>
+  <div
+    style="height: 38vw; overflow: hidden; overflow-y: auto; margin-top: 5px;margin-left: 2%; margin-right: 1%; border-radius: 20px; width:70%;float: left">
+    <div style=" padding: 5px; padding-bottom: 10px; border-radius: 20px">
+      <mat-card *ngFor="let event of Events" class="EventView" (click)="ViewEventAnswers(event)">
+
+        <mat-panel-title style="font-weight: bold; font-size: 20px">{{event.id}} {{event.title}}</mat-panel-title>
+        <button type="button" style="float: right; margin-right: 2px" class="InvisibleButtonBackground"
+                (click)="DeleteEvent(event)">
+          <mat-icon style="color: rgb(84,84,84)">delete</mat-icon>
+        </button>
+        <button type="button" style="float: right; margin-right: 15px" class="InvisibleButtonBackground"
+                (click)="EditEvent(event)">
+          <span class="material-icons" style="color: rgb(84, 84, 84);">mode_edit</span>
+        </button>
+        <br>
+        <hr/>
+        Location : {{event.location}}
+        <br>
+        Description : {{event.description}}
+        <button style="float:right;border-radius: 0px;box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 12px 0 rgba(0, 0, 0, 0.19);" class="InvisibleButtonBackground" (click)="ViewEventAnswers(event)"> View Answers </button>
+      </mat-card>
+      <mat-card *ngIf="this.UserHasEvents">
+        <mat-card-title style="cursor: pointer" (click)="CreateEvent()">Get started - Create your first event!</mat-card-title>
+      </mat-card>
+    </div>
+  </div>
+
+  <div style="justify-content: center">
+    <mat-icon (click)="CreateEvent()" class="CreateButton">add</mat-icon>
+  </div>
+
+
+</div>
+
+
+
+
+
+
+

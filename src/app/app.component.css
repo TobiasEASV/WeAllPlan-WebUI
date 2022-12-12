@@ -1,0 +1,26 @@
+.Primary{
+  font-weight: bold;
+  margin: 0;
+}
+
+.headerSpan{
+  flex: 1 1 auto;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.Header{
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  padding-left: 1vw;
+  padding-right: 1vw;
+}
+.HeaderMenuLoggedIn{
+  background-image: url("../../src/images/user.png");
+  background-size: 100%;
+}
+
+.HeaderMenuAnonymous {
+  background-image: url("../../src/images/dotdotdot.png");
+  background-size: 100%;
+}

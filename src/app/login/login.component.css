@@ -1,0 +1,18 @@
+mat-form-field{
+  width: 100%;
+}
+
+div.mainDiv{
+  width: 40%;
+  margin: 5% auto auto;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+mat-card{
+  padding: 5%;
+  background-color: whitesmoke;
+}
+
+.button{
+  margin-right: 2%;
+}

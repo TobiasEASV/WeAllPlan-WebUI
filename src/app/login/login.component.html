@@ -1,0 +1,33 @@
+<div class="mainDiv">
+  <mat-card>
+    <mat-card-title style="text-align: center">
+      Log in
+    </mat-card-title>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input [(ngModel)]="email" matInput>
+    </mat-form-field>
+    <br>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input [(ngModel)]="password" matInput [type]="'password'">
+    </mat-form-field>
+
+    <button mat-raised-button (click)="loginService.Login({email: email, password: password, keepMeLoggedIn})">Log in</button>
+    <mat-checkbox [ngModel]="keepMeLoggedIn" style="margin-left: 15px">Keep me logged in</mat-checkbox>
+    <button mat-raised-button style="margin-left: 15px; float: right" routerLink="/Register">Register</button>
+
+  </mat-card>
+
+</div>
+<div class="mainDiv">
+  <mat-card>
+    <mat-card-title>
+      Log in with Google
+    </mat-card-title>
+
+    <span id="buttonSpan" style=""></span>
+  </mat-card>
+</div>

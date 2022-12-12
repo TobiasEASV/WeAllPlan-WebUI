@@ -1,5 +1,5 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 import {LoginService} from "../../services/login.service";
 import {environment} from "../../environments/environment";
 import {CredentialResponse} from "google-one-tap";
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
       localStorage.removeItem('HasReloaded')
     }
 
-    }
+  }
 
 
   ngAfterContentInit(): void {

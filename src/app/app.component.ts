@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
 import {HttpService} from "../services/http.service";
-import {Router, Event, NavigationEnd} from '@angular/router';
+import {Event, NavigationEnd, Router} from '@angular/router';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import * as http from "http";
 import jwtDecode from "jwt-decode";
-import {User} from "./types/user";
 
 
 @Component({
@@ -27,15 +25,15 @@ export class AppComponent {
     });
 
     let token = localStorage.getItem('token') as any;
-    if (token){
+    if (token) {
       let decoded = jwtDecode(token) as any;
       let currentDate = new Date();
-      if (decoded.exp){
-        let expiry =  new Date(decoded.exp*1000);
+      if (decoded.exp) {
+        let expiry = new Date(decoded.exp * 1000);
 
-        if (currentDate<expiry){
+        if (currentDate < expiry) {
           this.http.ReadUserFromStorage(token);
-        } else if (currentDate>expiry){
+        } else if (currentDate > expiry) {
           localStorage.clear();
           alert("You have been logged out, login to continue.")
           //TODO
@@ -48,7 +46,7 @@ export class AppComponent {
   logOut() {
     localStorage.clear();
     this.http.IsUser = false;
-    this.http.user.UserName  = '';
+    this.http.user.UserName = '';
     this.http.user.Email = '';
     this.http.user.Id = '';
 

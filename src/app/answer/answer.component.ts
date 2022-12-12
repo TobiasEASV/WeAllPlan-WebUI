@@ -95,8 +95,6 @@ export class AnswerComponent implements OnInit {
   }
 
   ChangeResponse(response: number) {
-    console.log(response)
-    console.log(this.response[response])
     if (this.response[response] == 0) {
       this.response[response] = 1;
     } else if (this.response[response] == 1) {

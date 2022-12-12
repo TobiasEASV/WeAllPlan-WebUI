@@ -20,10 +20,6 @@ import {finalize, takeUntil} from 'rxjs/operators';
 import {addDays, addMinutes, endOfWeek} from 'date-fns';
 import {FormControl} from "@angular/forms";
 import {HttpService} from "../../services/http.service";
-import {EventSlot} from "../types/eventSlot";
-import {EventDTO} from "../types/eventDTO";
-import {SlotAnswer} from "../types/slotAnswer";
-import {Event} from "../types/event";
 import {CreateEvent, TimeSlot} from "../types/CreateEvent";
 
 
@@ -52,14 +48,6 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
     }
   }
 }
-
-let eventDTO: EventDTO;
-
-let slotAnswer: SlotAnswer;
-
-
-let eventSlot: EventSlot;
-let eventSlotDTO: EventSlot[]
 
 @Component({
   selector: 'app-create-event',
@@ -98,7 +86,6 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
   weekStartsOn: 1 = 1; //This makes the calendar start on Mondays in week view
   filteredOptionsStartTime: Observable<string[]> | any;
   filteredOptionsEndTime: Observable<string[]> | any;
-
 
 
   //Event
@@ -179,7 +166,6 @@ export class CreateEventComponent extends CalendarNativeDateFormatter implements
 
     return this.options.filter(option => option.toLowerCase().includes(filterValueStart));
   }
-
 
 
   startDragToCreate(

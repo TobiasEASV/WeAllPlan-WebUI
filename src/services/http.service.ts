@@ -1,14 +1,11 @@
 import {Injectable} from '@angular/core';
 import axios from "axios";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {catchError, config} from "rxjs";
+import {catchError} from "rxjs";
 import jwtDecode from "jwt-decode";
 import {User} from "../app/types/user";
 import {Event} from "../app/types/event";
 import {environment} from "../environments/environment";
-import {CalendarEvent} from "angular-calendar";
-import {EventDTO} from "../app/types/eventDTO";
-import {parseJson} from "@angular/cli/src/utilities/json-file";
 import {CreateEvent} from "../app/types/CreateEvent";
 import {SlotAnswer} from "../app/types/slotAnswer";
 import {Router} from "@angular/router";
@@ -33,7 +30,7 @@ export class HttpService {
     Id: ''
   }
   IsUser: boolean = false;
-  SelectedEventId: string ='';
+  SelectedEventId: string = '';
 
   constructor(private matSnackbar: MatSnackBar, private route: Router) {
     customAxios.interceptors.response.use(
@@ -64,13 +61,13 @@ export class HttpService {
   }
 
 
-  async GenerateInviteLink(EventId: string): Promise<string>{
-    let successResult = await customAxios.get<string>('/Event/GenerateInviteLink', { params: { EventId: EventId}})
+  async GenerateInviteLink(EventId: string): Promise<string> {
+    let successResult = await customAxios.get<string>('/Event/GenerateInviteLink', {params: {EventId: EventId}})
     return successResult.data
   }
 
-  async GetEncryptedEventToAnswer(EncryptedEventId: string | null =''): Promise<Event>{
-    let successResult = await customAxios.get<Event>('/Event/GetEventFromInviteLink', { params: { EncryptedEventId: EncryptedEventId}})
+  async GetEncryptedEventToAnswer(EncryptedEventId: string | null = ''): Promise<Event> {
+    let successResult = await customAxios.get<Event>('/Event/GetEventFromInviteLink', {params: {EncryptedEventId: EncryptedEventId}})
     return successResult.data
   }
 
@@ -80,9 +77,8 @@ export class HttpService {
   }
 
 
-  async GetEventsFromUserID(UserId: string): Promise<Event[]>
-  {
-    let successResult = await customAxios.get<Event[]>('/Event/GetEventsFromUser', {params:{userId: UserId}})
+  async GetEventsFromUserID(UserId: string): Promise<Event[]> {
+    let successResult = await customAxios.get<Event[]>('/Event/GetEventsFromUser', {params: {userId: UserId}})
 
     return successResult.data
   }
@@ -94,8 +90,9 @@ export class HttpService {
     this.user.Email = Token.Email;
     this.IsUser = true
   }
-  deleteEvent(EventId: string, UserId:string){
-    let successResult = customAxios.delete('Event/DeleteEvent', {params:{eventId: EventId, userId:UserId}});
+
+  deleteEvent(EventId: string, UserId: string) {
+    let successResult = customAxios.delete('Event/DeleteEvent', {params: {eventId: EventId, userId: UserId}});
 
   }
 
@@ -108,16 +105,16 @@ export class HttpService {
   async saveEvent(event: CreateEvent) {
     await customAxios.post("/Event/CreateEvent", event)
       .then(response => {
-        if(response.status === 401){
+        if (response.status === 401) {
           this.matSnackbar.open("Error: " + response.data, 'close', {duration: 4000});
-        }else {
+        } else {
           this.matSnackbar.open(event.title + " has been created", 'close', {duration: 4000});
           this.route.navigate(["/Dashboard"])
         }
       });
   }
 
-  async saveSlotAnswer(slotAnswer: SlotAnswer[]){
+  async saveSlotAnswer(slotAnswer: SlotAnswer[]) {
     await customAxios.post("/SlotAnswer/CreateSlotAnswer", slotAnswer)
   }
 

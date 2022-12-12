@@ -10,11 +10,10 @@ import {User} from "../types/user";
 import {MatDialog} from "@angular/material/dialog";
 import {GuestCredentialDialogComponent} from "./guest-credential-dialog/guest-credential-dialog.component";
 import {SlotAnswer} from "../types/slotAnswer";
-import {EventSlot} from "../types/eventSlot";
 
 
 let Event: Event
-let counter :number = 0;
+let counter: number = 0;
 
 
 @Component({
@@ -28,7 +27,6 @@ export class AnswerComponent implements OnInit {
 
   Dates: string[] = ['']
   answers: Map<string, number> = new Map();
-  tempDates: string[] = ['user', ' 28/1 15:40', '29/1 15:40', '2/2 15:40 - 16:00', '12/2 15:40', '13/2 15:40', '14/2 15:40', '15/2 15:40', '16/2 15:40', '17/2 15:40', '18/2 15:40', '19/2 15:40 - 16:00', '20/2 15:40', '21/2 15:40']
   AnswerDictionary: Map<SlotAnswer, number[]> = new Map();
   LoggedInUser: User = {
     Email: '',
@@ -39,18 +37,18 @@ export class AnswerComponent implements OnInit {
   event: Event = Event
   InviteLink: string = "";
   response: number[] = [];
-  SlotAnswerName: string = "";
-  SlotAnswerEmail: string = "";
-  isEmail: boolean = this.SlotAnswerEmail.includes("@");
 
-  constructor(public http: HttpService, private route: ActivatedRoute, private clipboard: Clipboard, private matSnackbar: MatSnackBar, private dialog: MatDialog) {
-
+  constructor(public http: HttpService,
+              private route: ActivatedRoute,
+              private clipboard: Clipboard,
+              private matSnackbar: MatSnackBar,
+              private dialog: MatDialog) {
   }
 
   async ngOnInit(): Promise<void> {
 
     if (!this.http.IsUser) {
-      this.user = "John Do"
+      this.user = "John Doe"
     } else {
       this.LoggedInUser = this.http.user
     }
@@ -58,26 +56,22 @@ export class AnswerComponent implements OnInit {
 
     this.event = this.route.snapshot.data['Event'];
     this.user = this.http.user.UserName
-    
-    this.event.eventSlots?.forEach((eventslots)=>
-    {
+
+    this.event.eventSlots?.forEach((eventslots) => {
       this.Dates.push(this.formatStartDate(new Date(eventslots.startTime)) + "-" + this.formatEndDate(new Date(eventslots.endTime)))
     })
 
-    if(this.event.eventSlots)
-    {
-      this.event.eventSlots[0].slotAnswers.forEach((answers)=>
-      {
+    if (this.event.eventSlots) {
+      this.event.eventSlots[0].slotAnswers.forEach((answers) => {
 
         this.AnswerDictionary.set(answers, [answers.answer])
         counter++;
       })
 
-      for (let i = 1; i< this.event.eventSlots.length; i++)
-      {
-        this.event.eventSlots[i].slotAnswers.forEach( (answer)=>{
-          for(let b =0; b<counter; b++){
-           let key = Array.from(this.AnswerDictionary.keys())[b]
+      for (let i = 1; i < this.event.eventSlots.length; i++) {
+        this.event.eventSlots[i].slotAnswers.forEach((answer) => {
+          for (let b = 0; b < counter; b++) {
+            let key = Array.from(this.AnswerDictionary.keys())[b]
             if (key.email == answer.email)
               // @ts-ignore
               this.AnswerDictionary.get(key).push([answer.answer])
@@ -100,7 +94,7 @@ export class AnswerComponent implements OnInit {
 
   }
 
-  changeResponse(response:number) {
+  ChangeResponse(response: number) {
     console.log(response)
     console.log(this.response[response])
     if (this.response[response] == 0) {
@@ -112,7 +106,7 @@ export class AnswerComponent implements OnInit {
     }
   }
 
-  async saveSlotAnswersFromUser(slotanswers :SlotAnswer[]) {
+  async SaveSlotAnswersFromUser(slotanswers: SlotAnswer[]) {
     if (this.event.eventSlots)
       for (let i = 0; i < this.event.eventSlots.length; i++) {
         let slotanswer: SlotAnswer = {
@@ -126,12 +120,12 @@ export class AnswerComponent implements OnInit {
       }
     await this.http.saveSlotAnswer(slotanswers).then(() => {
       this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
-      this.pushSlotAnswersToDOM(slotanswers);
+      this.PushSlotAnswersToDOM(slotanswers);
     })
 
   }
 
-  async saveSlotAnswersFromGuest(slotanswers: SlotAnswer[]) {
+  async SaveSlotAnswersFromGuest(slotanswers: SlotAnswer[]) {
     let result = this.dialog.open(GuestCredentialDialogComponent);
     result.afterClosed().subscribe(async result => {
       if (this.event.eventSlots)
@@ -147,17 +141,16 @@ export class AnswerComponent implements OnInit {
         }
       await this.http.saveSlotAnswer(slotanswers).then(() => {
           this.matSnackbar.open("Your answers has be registered", "close", {duration: 3000})
-          this.pushSlotAnswersToDOM(slotanswers)
+          this.PushSlotAnswersToDOM(slotanswers)
         }
       )
     })
   }
 
 
-  async pushSlotAnswersToDOM(slotanswers: SlotAnswer[]) {
+  async PushSlotAnswersToDOM(slotanswers: SlotAnswer[]) {
     let answers = []
-    for (let i =0; i<slotanswers.length; i++)
-    {
+    for (let i = 0; i < slotanswers.length; i++) {
       answers.push(slotanswers[i].answer)
     }
     this.AnswerDictionary.set(slotanswers[0], answers)
@@ -168,10 +161,10 @@ export class AnswerComponent implements OnInit {
   async SaveSlotAnswers() {
     let slotanswers: SlotAnswer[] = []
     if (this.http.IsUser) {
-      await this.saveSlotAnswersFromUser(slotanswers);
+      await this.SaveSlotAnswersFromUser(slotanswers);
 
     } else {
-      await this.saveSlotAnswersFromGuest(slotanswers);
+      await this.SaveSlotAnswersFromGuest(slotanswers);
 
     }
     let table = document.getElementById("AnswerTable")

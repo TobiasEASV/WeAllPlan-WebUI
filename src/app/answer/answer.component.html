@@ -36,15 +36,15 @@
           </td>
           <td *ngFor="let a of response; let index = index">
             <mat-card style="background: rgba(255,46,46,0.4);" *ngIf="response[index] == 0"
-                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="changeResponse(index)">
+                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="ChangeResponse(index)">
               <mat-card-title class="matTitleCardAnswer"> X</mat-card-title>
             </mat-card>
             <mat-card style="background: rgba(255,203,70,0.4);" *ngIf="response[index] == 1"
-                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="changeResponse(index)">
+                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="ChangeResponse(index)">
               <mat-card-title class="matTitleCardAnswer"> ?</mat-card-title>
             </mat-card>
             <mat-card style="background: rgba(84,255,46,0.4);" *ngIf="response[index] == 2"
-                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="changeResponse(index)">
+                      class="myAnswerMatCards , answerMatCards , centerAllignText" (click)="ChangeResponse(index)">
               <mat-card-title class="matTitleCardAnswer">✔</mat-card-title>
             </mat-card>
 

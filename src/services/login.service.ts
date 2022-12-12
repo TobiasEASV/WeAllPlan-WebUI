@@ -2,7 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 import axios from "axios";
 import {environment} from "../environments/environment";
 import {HttpService} from "./http.service";
-import {catchError, Observable} from "rxjs";
+import {catchError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 
@@ -51,9 +51,9 @@ export class LoginService {
 
   async Register(dto: { password: any; email: any; name: any }) {
     customAxios.post('/register', dto).then(successResult => {
-      if (successResult.status >= 400 && successResult.status < 500 ){
+      if (successResult.status >= 400 && successResult.status < 500) {
         this.matSnackbar.open(successResult.data.preview, undefined, {duration: 3000});
-      } else if (successResult.status >= 200 && successResult.status < 400 ){
+      } else if (successResult.status >= 200 && successResult.status < 400) {
         this.router.navigate(['./Login'])
         this.matSnackbar.open("You have been registered", undefined, {duration: 3000});
       }
@@ -62,29 +62,33 @@ export class LoginService {
 
   async Login(dto: any) {
     customAxios.post<string>('/login', dto).then(successResult => {
-      if (successResult.status >= 400 && successResult.status < 500 ){
+      if (successResult.status >= 400 && successResult.status < 500) {
         this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
-      } else if (successResult.status >= 200 && successResult.status < 400 ){{
-        this.http.ReadUserFromStorage(successResult.data);
-        localStorage.setItem('token', successResult.data);
-        this.router.navigate(['./Dashboard'])
-        this.matSnackbar.open("Welcome " + this.http.user.UserName, undefined, {duration: 3000})
-      }}
+      } else if (successResult.status >= 200 && successResult.status < 400) {
+        {
+          this.http.ReadUserFromStorage(successResult.data);
+          localStorage.setItem('token', successResult.data);
+          this.router.navigate(['./Dashboard'])
+          this.matSnackbar.open("Welcome " + this.http.user.UserName, undefined, {duration: 3000})
+        }
+      }
     })
   }
 
-  async LogInWithGoogle(credential: string){
+  async LogInWithGoogle(credential: string) {
     customAxios.post<any>('/login/LoginWithGoogle', {credential: credential}).then(successResult => {
-      if (successResult.status >= 400 && successResult.status < 500 ){
+      if (successResult.status >= 400 && successResult.status < 500) {
         this.matSnackbar.open(successResult.statusText, undefined, {duration: 3000});
-      } else if (successResult.status >= 200 && successResult.status < 400 ){{
-        this.http.ReadUserFromStorage(successResult.data);
-        localStorage.setItem('token', successResult.data);
-        this.ngZone.run(() => {
-          this.router.navigate(['./Dashboard'])
-        });
-        this.matSnackbar.open("Welcome " + this.http.user.UserName, undefined, {duration: 3000})
-      }}
+      } else if (successResult.status >= 200 && successResult.status < 400) {
+        {
+          this.http.ReadUserFromStorage(successResult.data);
+          localStorage.setItem('token', successResult.data);
+          this.ngZone.run(() => {
+            this.router.navigate(['./Dashboard'])
+          });
+          this.matSnackbar.open("Welcome " + this.http.user.UserName, undefined, {duration: 3000})
+        }
+      }
     }).catch(reason => {
       console.log(reason)
     })

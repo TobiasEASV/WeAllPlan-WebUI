@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../../services/http.service";
 import {Router} from "@angular/router";
 
@@ -9,13 +9,14 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public http: HttpService, private router: Router) { }
+  constructor(public http: HttpService, private router: Router) {
+  }
 
   ngOnInit(): void {
   }
 
   TryWAP() {
-    if (this.http.IsUser){
+    if (this.http.IsUser) {
       this.router.navigate(['CreateEvent']);
     } else {
       this.router.navigate(['Login']);

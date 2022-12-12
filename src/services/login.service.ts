@@ -86,7 +86,7 @@ export class LoginService {
         this.matSnackbar.open("Welcome " + this.http.user.UserName, undefined, {duration: 3000})
       }}
     }).catch(reason => {
-      console.log(reason)
+
     })
   }
 }

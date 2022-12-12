@@ -58,7 +58,7 @@ export class AnswerComponent implements OnInit {
 
     this.event = this.route.snapshot.data['Event'];
     this.user = this.http.user.UserName
-    
+
     this.event.eventSlots?.forEach((eventslots)=>
     {
       this.Dates.push(this.formatStartDate(new Date(eventslots.startTime)) + "-" + this.formatEndDate(new Date(eventslots.endTime)))
@@ -100,9 +100,7 @@ export class AnswerComponent implements OnInit {
 
   }
 
-  changeResponse(response:number) {
-    console.log(response)
-    console.log(this.response[response])
+  ChangeResponse(response: number) {
     if (this.response[response] == 0) {
       this.response[response] = 1;
     } else if (this.response[response] == 1) {
